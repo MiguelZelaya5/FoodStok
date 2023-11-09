@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">FoodStok</string>
+    <string name="add">Agregar</string>
+    <string name="search">Buscar</string>
+    <string name="edit">editar</string>
+    <string name="delete">Eliminar</string>
+    <string name="action_settings">Ajustes</string>
+    <string name="info_ini">Selecciona una opcion del menu</string>
+</resources>
