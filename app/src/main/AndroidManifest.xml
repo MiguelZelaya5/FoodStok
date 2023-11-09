@@ -13,6 +13,15 @@
         android:theme="@style/Theme.AppCompat.DayNight"
         tools:targetApi="31">
         <activity
+            android:name=".nuevaCategoria"
+            android:exported="false" />
+        <activity
+            android:name=".Categorias"
+            android:exported="false" />
+        <activity
+            android:name=".Almacen"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
