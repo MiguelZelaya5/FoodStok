@@ -60,9 +60,9 @@ public class agregar_producto extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                if (ContextCompat.checkSelfPermission(agregar_producto.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
 
-                    ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.CAMERA}, MY_PERMISSIONS_REQUEST_CAMERA);
+                    ActivityCompat.requestPermissions(agregar_producto.this, new String[]{Manifest.permission.CAMERA}, MY_PERMISSIONS_REQUEST_CAMERA);
                 } else {
 
                     dispatchTakePictureIntent();
@@ -119,7 +119,7 @@ public class agregar_producto extends AppCompatActivity {
         mMonth = calendar.get(Calendar.MONTH);
         mDay = calendar.get(Calendar.DAY_OF_MONTH);
 
-        DatePickerDialog datePickerDialog = new DatePickerDialog(MainActivity.this,
+        DatePickerDialog datePickerDialog = new DatePickerDialog(agregar_producto.this,
                 new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
