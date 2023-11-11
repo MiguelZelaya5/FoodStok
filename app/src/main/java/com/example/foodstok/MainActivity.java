@@ -16,16 +16,20 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.widget.Toolbar;
 
+import com.example.foodstok.inventario.datos;
 
 
 public class MainActivity extends AppCompatActivity {
 
     private TextView info;
 
+    private Spinner spinner_categorias;
+    private categorias_adapter adapter;
     DrawerLayout drawerLayout;
     ImageView menu;
     LinearLayout exit,about,categoria,Almacen,home;
@@ -42,9 +46,6 @@ public class MainActivity extends AppCompatActivity {
         exit=findViewById(R.id.exit);
         Almacen=findViewById(R.id.Almacen);
         categoria=findViewById(R.id.categoria);
-
-
-
 
         menu.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,6 +83,10 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, "LogOut", Toast.LENGTH_SHORT).show();
             }
         });
+
+        spinner_categorias = findViewById(R.id.spinn_categorias);
+        adapter = new categorias_adapter(MainActivity.this, datos.getCatList());
+        spinner_categorias.setAdapter(adapter);
 
 
     }
