@@ -13,7 +13,8 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:background="#C9D8DD"
-        tools:context=".MainActivity">
+        android:id="@+id/addP"
+        tools:context=".agregar_producto">
 
         <include
             layout="@layout/toolbar"/>

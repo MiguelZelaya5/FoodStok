@@ -19,14 +19,22 @@
         <include
             layout="@layout/toolbar"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="400dp"
-            android:text="Home"
-            android:textColor="@color/blue"
-            android:textSize="36sp" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/addProducto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="14dp"
+                android:backgroundTint="@android:color/darker_gray"
+                android:contentDescription="@string/btnAgg"
+                app:elevation="6dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:pressedTranslationZ="12dp"
+                app:srcCompat="@drawable/mas" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </LinearLayout>
 

@@ -22,17 +22,16 @@ import android.widget.Toast;
 import androidx.appcompat.widget.Toolbar;
 
 import com.example.foodstok.inventario.datos;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 
 public class MainActivity extends AppCompatActivity {
 
     private TextView info;
-
-    private Spinner spinner_categorias;
-    private categorias_adapter adapter;
+    FloatingActionButton fab;
     DrawerLayout drawerLayout;
     ImageView menu;
-    LinearLayout exit,about,categoria,Almacen,home;
+    LinearLayout exit,about,categoria,Almacen,home,addP;
     private Button menuButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
         Almacen=findViewById(R.id.Almacen);
         categoria=findViewById(R.id.categoria);
 
+        fab = findViewById(R.id.addProducto);
         menu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -84,9 +84,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        spinner_categorias = findViewById(R.id.spinn_categorias);
-        adapter = new categorias_adapter(MainActivity.this, datos.getCatList());
-        spinner_categorias.setAdapter(adapter);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                redirectActivity(MainActivity.this, agregar_producto.class);
+            }
+        });
+
 
 
     }

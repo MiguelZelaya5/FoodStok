@@ -3,21 +3,32 @@ package com.example.foodstok;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import android.Manifest;
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.foodstok.inventario.datos;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+
 import com.journeyapps.barcodescanner.CaptureActivity;
 import android.content.Intent;
 import com.google.zxing.integration.android.IntentIntegrator;
@@ -27,6 +38,13 @@ import java.util.Calendar;
 
 public class agregar_producto extends AppCompatActivity {
 
+
+    FloatingActionButton fab;
+    DrawerLayout drawerLayout;
+    ImageView menu;
+    LinearLayout exit,about,categoria,Almacen,home,addP;
+    private Spinner spinner_categorias;
+    private categorias_adapter adapter;
     private EditText etProductName, etQuantity;
     private TextView tvManufacturingDate, tvExpirationDate;
     private ImageView ivProductImage;
@@ -43,7 +61,7 @@ public class agregar_producto extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_agregar_producto);
 
         etProductName = findViewById(R.id.etProductName);
         etQuantity = findViewById(R.id.etQuantity);
@@ -55,6 +73,16 @@ public class agregar_producto extends AppCompatActivity {
         btnScanBarcode = findViewById(R.id.btnScanBarcode);
         btnAddProduct = findViewById(R.id.btnAddProduct);
         etQuantity.setText("0");
+
+        drawerLayout = findViewById(R.id.drawerLayout);
+        menu=findViewById(R.id.menu);
+        home=findViewById(R.id.home);
+        about=findViewById(R.id.about);
+        exit=findViewById(R.id.exit);
+        Almacen=findViewById(R.id.Almacen);
+        categoria=findViewById(R.id.categoria);
+
+        fab = findViewById(R.id.addProducto);
 
         ivProductImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -111,6 +139,46 @@ public class agregar_producto extends AppCompatActivity {
                 addProduct();
             }
         });
+        spinner_categorias = findViewById(R.id.spinn_categorias);
+        adapter = new categorias_adapter(agregar_producto.this, datos.getCatList());
+        spinner_categorias.setAdapter(adapter);
+
+        menu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openDrawer(drawerLayout);
+            }
+        });
+        home.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                redirectActivity(agregar_producto.this, MainActivity.class);
+            }
+        });
+
+        Almacen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("MainActivity", "Click on Almacen button");
+                redirectActivity(agregar_producto.this, Almacen.class);
+            }
+        });
+
+        categoria.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("MainActivity", "Click on Almacen button");
+                redirectActivity(agregar_producto.this, Categorias.class);
+            }
+        });
+        exit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(agregar_producto.this, "LogOut", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
     }
 
     private void showDatePicker(final TextView textView) {
@@ -191,4 +259,27 @@ public class agregar_producto extends AppCompatActivity {
             startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
         }
     }
+
+    public static void openDrawer(DrawerLayout drawerLayout){
+        drawerLayout.openDrawer(GravityCompat.START);
+    }
+    public static void closeDrawer(DrawerLayout drawerLayout){
+        if(drawerLayout.isDrawerOpen(GravityCompat.START)){
+            drawerLayout.closeDrawer(GravityCompat.START);
+        }
+    }
+
+    public static void redirectActivity(Activity activity, Class secondActivity) {
+        Intent intent = new Intent(activity, secondActivity);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        activity.startActivity(intent);
+        activity.finish();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        closeDrawer(drawerLayout);
+    }
+
 }
