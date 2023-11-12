@@ -66,6 +66,7 @@ public class Categorias extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Toast.makeText(Categorias.this, "LogOut", Toast.LENGTH_SHORT).show();
+
             }
         });
 
