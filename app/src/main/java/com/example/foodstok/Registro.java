@@ -1,6 +1,8 @@
 package com.example.foodstok;
 
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -9,75 +11,74 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 public class Registro extends AppCompatActivity {
-    EditText nombre;
-    EditText apellidos;
-    EditText  numero;
-    EditText  correo;
-    EditText contrasena;
-    Button btn_registro;
+
+    private EditText nombre, apellidos, correo, contrasena;
+    private Button btn_registro;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registro);
-        nombre=findViewById(R.id.nombre);
-        apellidos=findViewById(R.id.ape);
-        correo=findViewById(R.id.Correo);
-        numero=findViewById(R.id.num);
-        contrasena=findViewById(R.id.contra);
-        btn_registro=findViewById(R.id.btn_iniciar);
+
+        nombre = findViewById(R.id.nombre);
+        apellidos = findViewById(R.id.ape);
+        correo = findViewById(R.id.Correo);
+        contrasena = findViewById(R.id.contra);
+        btn_registro = findViewById(R.id.btn_iniciar);
+
         btn_registro.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                register();
-            }
-        });
-    }
+            public void onClick(View v) {
+                String nombree = nombre.getText().toString();
+                String apellido = apellidos.getText().toString();
+                String email = correo.getText().toString();
+                String contra = contrasena.getText().toString();
 
-    private void register() {
-        String name= nombre.getText().toString().toUpperCase();
-        String ape= apellidos.getText().toString().toUpperCase();
-        String number= numero.getText().toString().toUpperCase();
-        String co= correo.getText().toString().toUpperCase();
-        String pas= contrasena.getText().toString().toUpperCase();
-
-        if(!name.isEmpty()&& !ape.isEmpty() && !number.isEmpty() && !co.isEmpty() && !pas.isEmpty()){
-            if(isEmailValid(co)){
-                if(pas.length()>= 5){
-                    createUser(name, co, pas);
-                }else{
-                    Toast.makeText(Registro.this, "La contraseña debe ser mayor a 4 caracteres", Toast.LENGTH_SHORT).show();
+                if (nombree.isEmpty() || apellido.isEmpty() || email.isEmpty() || contra.isEmpty()) {
+                    Toast.makeText(Registro.this, "Por favor, complete todos los campos", Toast.LENGTH_SHORT).show();
+                    return;
                 }
 
-            }else{
-                Toast.makeText(Registro.this, "El correo no es valido", Toast.LENGTH_SHORT).show();
+                // Realizar el registro en la base de datos (aquí debes implementar tu lógica de base de datos)
+                boolean exitoRegistro = registrarUsuario(nombree, apellido, email, contra);
+
+                if (exitoRegistro) {
+                    Toast.makeText(Registro.this, "Registro exitoso", Toast.LENGTH_SHORT).show();
+                    // Aquí puedes redirigir al usuario a otra actividad o realizar alguna acción adicional
+                    Intent intent = new Intent(Registro.this, Sesion.class);
+                    startActivity(intent);
+                    finish();
+                } else {
+                    Toast.makeText(Registro.this, "Error en el registro. Inténtalo de nuevo", Toast.LENGTH_SHORT).show();
+                }
             }
-
-        }else{
-
-            Toast.makeText(Registro.this, "Ingrese todos los datos", Toast.LENGTH_SHORT).show();
-        }
+        });
 
     }
 
-    private void createUser(String name, String co, String pass) {
+    private boolean registrarUsuario(String nombree, String apellido, String email, String contra) {
+        DatabaseHelper databaseHelper = new DatabaseHelper(this);
+        SQLiteDatabase db = databaseHelper.getWritableDatabase();
 
+        ContentValues values = new ContentValues();
+        values.put("nombre", nombree);
+        values.put("correoelectronico", email);
+        values.put("contrasena", contra);
+        values.put("apellido", apellido);
+
+        long result = db.insert("usuarios", null, values);
+
+        db.close();
+
+        return result != -1;
     }
 
-    public boolean isEmailValid(String co){
-        String expression ="/^w+@[a-zA-Z_]+?.[a-zA-Z] {2,3}$/";
-        Pattern pattern= Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
-        Matcher matcher = pattern.matcher(co);
-        return matcher.matches();
-    }
-
-    public void siguiente(View view){
-        Intent siguiente = new Intent(this,Sesion.class);
-        startActivity(siguiente);
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(Registro.this, Sesion.class);
+        startActivity(intent);
+        finish();
     }
 
 }

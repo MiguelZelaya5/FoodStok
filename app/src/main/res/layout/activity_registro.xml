@@ -9,33 +9,17 @@
     tools:layout_editor_absoluteY="-7dp">
 
     <EditText
-        android:id="@+id/num"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="27dp"
-        android:layout_marginEnd="27dp"
-        android:layout_marginBottom="13dp"
-        android:ems="10"
-        android:hint="Numero Telefonico:"
-        android:inputType="textPersonName"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/Correo"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ape" />
-
-    <EditText
         android:id="@+id/ape"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="27dp"
         android:layout_marginEnd="27dp"
-        android:layout_marginBottom="13dp"
+        android:layout_marginBottom="12dp"
         android:ems="10"
         android:hint="Apellidos:"
         android:inputType="textPersonName"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/num"
+        app:layout_constraintBottom_toTopOf="@+id/Correo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/nombre" />
@@ -46,7 +30,7 @@
         android:layout_height="0dp"
         android:layout_marginStart="27dp"
         android:layout_marginEnd="27dp"
-        android:layout_marginBottom="13dp"
+        android:layout_marginBottom="11dp"
         android:ems="10"
         android:hint="Nombres:"
         android:inputType="textPersonName"
@@ -62,7 +46,7 @@
         android:layout_height="0dp"
         android:layout_marginStart="27dp"
         android:layout_marginEnd="27dp"
-        android:layout_marginBottom="13dp"
+        android:layout_marginBottom="15dp"
         android:ems="10"
         android:hint="Contraseña:"
         android:inputType="textPassword"
@@ -78,7 +62,7 @@
         android:layout_height="0dp"
         android:layout_marginStart="27dp"
         android:layout_marginEnd="27dp"
-        android:layout_marginBottom="12dp"
+        android:layout_marginBottom="28dp"
         android:text="Registrarse"
         android:textSize="16sp"
         android:textStyle="bold"
@@ -92,13 +76,14 @@
         android:layout_width="203dp"
         android:layout_height="0dp"
 
+        android:layout_marginStart="27dp"
         android:layout_marginBottom="42dp"
         android:onClick="siguiente"
         android:text="Iniciar sesión"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/btn_iniciar"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_iniciar" />
 
     <EditText
@@ -107,7 +92,7 @@
         android:layout_height="0dp"
         android:layout_marginStart="27dp"
         android:layout_marginEnd="27dp"
-        android:layout_marginBottom="12dp"
+        android:layout_marginBottom="16dp"
         android:ems="10"
         android:hint="Correo Electronico:"
         android:inputType="textPersonName"
@@ -115,14 +100,14 @@
         app:layout_constraintBottom_toTopOf="@+id/contra"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/num" />
+        app:layout_constraintTop_toBottomOf="@+id/ape" />
 
     <ImageView
         android:id="@+id/imageView5"
         android:layout_width="125dp"
         android:layout_height="125dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="23dp"
+        android:layout_marginTop="65dp"
+        android:layout_marginBottom="33dp"
         android:src="@drawable/icono"
         app:layout_constraintBottom_toTopOf="@+id/nombre"
         app:layout_constraintEnd_toEndOf="parent"
