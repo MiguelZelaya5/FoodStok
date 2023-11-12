@@ -269,7 +269,7 @@ public class agregar_producto extends AppCompatActivity {
 
     private void addProduct() {
         this.categoriaspiner();
-        String url = "http://192.168.1.7/android_mysq/insertararticulos.php";
+        String url = "http://192.168.1.6/android_mysq/insertararticulos.php";
 
         RequestQueue queue = Volley.newRequestQueue(this);
 
