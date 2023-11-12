@@ -1,5 +1,4 @@
 package com.example.foodstok;
-
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import android.Manifest;
@@ -7,11 +6,17 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -20,12 +25,19 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 
-import com.example.foodstok.inventario.datos;
+
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.FileProvider;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
@@ -33,8 +45,28 @@ import com.journeyapps.barcodescanner.CaptureActivity;
 import android.content.Intent;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
+
+import java.io.File;
+import java.io.IOException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+
+import java.io.ByteArrayOutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
 
 public class agregar_producto extends AppCompatActivity {
 
@@ -43,14 +75,15 @@ public class agregar_producto extends AppCompatActivity {
     DrawerLayout drawerLayout;
     ImageView menu;
     LinearLayout exit,about,categoria,Almacen,home,addP;
-    private Spinner spinner_categorias;
-    private categorias_adapter adapter;
     private EditText etProductName, etQuantity;
     private TextView tvManufacturingDate, tvExpirationDate;
+    private Spinner spincategoria;
+    private String imageFilePath = "";
     private ImageView ivProductImage;
     private Button btnDecrease, btnIncrease, btnScanBarcode, btnAddProduct;
 
     private int mYear, mMonth, mDay;
+    public String categoriatexto;
 
     // Constante para la solicitud de captura de imagen
     private static final int REQUEST_IMAGE_CAPTURE = 1;
@@ -73,7 +106,7 @@ public class agregar_producto extends AppCompatActivity {
         btnScanBarcode = findViewById(R.id.btnScanBarcode);
         btnAddProduct = findViewById(R.id.btnAddProduct);
         etQuantity.setText("0");
-
+        spincategoria=findViewById(R.id.spinn_categorias);
         drawerLayout = findViewById(R.id.drawerLayout);
         menu=findViewById(R.id.menu);
         home=findViewById(R.id.home);
@@ -139,10 +172,6 @@ public class agregar_producto extends AppCompatActivity {
                 addProduct();
             }
         });
-        spinner_categorias = findViewById(R.id.spinn_categorias);
-        adapter = new categorias_adapter(agregar_producto.this, datos.getCatList());
-        spinner_categorias.setAdapter(adapter);
-
         menu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -164,13 +193,6 @@ public class agregar_producto extends AppCompatActivity {
             }
         });
 
-        categoria.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d("MainActivity", "Click on Almacen button");
-                redirectActivity(agregar_producto.this, Categorias.class);
-            }
-        });
         exit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -246,18 +268,112 @@ public class agregar_producto extends AppCompatActivity {
 
 
     private void addProduct() {
-        String productName = etProductName.getText().toString();
-        String manufacturingDate = tvManufacturingDate.getText().toString();
-        String expirationDate = tvExpirationDate.getText().toString();
-        int quantity = Integer.parseInt(etQuantity.getText().toString());
-        // Implementa tu lógica para agregar el producto a la base de datos u otras acciones aquí
+        this.categoriaspiner();
+        String url = "http://192.168.1.7/android_mysq/insertararticulos.php";
+
+        RequestQueue queue = Volley.newRequestQueue(this);
+
+        SimpleDateFormat sdfInput = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+
+        // Obtener el texto de los TextView
+        String manufacturingDateText = tvManufacturingDate.getText().toString();
+        String expirationDateText = tvExpirationDate.getText().toString();
+
+        // Parsear las fechas del TextView al formato deseado: YYYY-MM-DD
+        SimpleDateFormat sdfOutput = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        try {
+            Date manufacturingDate = sdfInput.parse(manufacturingDateText);
+            Date expirationDate = sdfInput.parse(expirationDateText);
+
+            // Formatear las fechas al nuevo formato
+            String manufacturingDateFormatted = sdfOutput.format(manufacturingDate);
+            String expirationDateFormatted = sdfOutput.format(expirationDate);
+
+            StringRequest request = new StringRequest(Request.Method.POST, url,
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            Toast.makeText(agregar_producto.this, "Producto agregado exitosamente", Toast.LENGTH_LONG).show();
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Toast.makeText(agregar_producto.this, "Error al agregar el producto: " + error, Toast.LENGTH_LONG).show();
+                        }
+                    }
+            ) {
+                @Override
+                protected Map<String, String> getParams() {
+                    Map<String, String> parameters = new HashMap<>();
+                    parameters.put("categoria", categoriatexto);
+                    parameters.put("nombrearticulo", etProductName.getText().toString());
+                    parameters.put("fechafabricacion", manufacturingDateFormatted);
+                    parameters.put("fechacaducidad", expirationDateFormatted);
+                    parameters.put("cantidad", etQuantity.getText().toString());
+                    parameters.put("foto", imageFilePath);
+
+                    // Otros parámetros necesarios
+                    parameters.put("id_usuario", "1"); // Por ejemplo
+
+                    return parameters;
+                }
+            };
+
+            queue.add(request);
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
+    public void categoriaspiner(){
+        String escala=spincategoria.getSelectedItem().toString();
+        if (escala.equals("Carnes")) {
+            categoriatexto="Carnes";
+
+        } else if (escala.equals("Lacteos")) {
+
+            categoriatexto="Lacteos";
+
+        } else if (escala.equals("Vegetales")) {
+
+            categoriatexto="Vegetales";
+
+        } else if (escala.equals("Fruta")) {
+
+            categoriatexto="Fruta";
+
+        }else if(escala.equals("Aderezo")){
+            categoriatexto="Aderezo";
+        }
     }
 
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+            // Creamos un archivo temporal para guardar la imagen
+            File photoFile = null;
+            try {
+                photoFile = createImageFile();
+            } catch (IOException ex) {
+                // Manejar la excepción, si ocurre
+            }
+
+            if (photoFile != null) {
+                Uri photoURI = FileProvider.getUriForFile(this, "com.example.android.fileprovider", photoFile);
+                imageFilePath = photoFile.getAbsolutePath();
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+            }
         }
+    }
+    private File createImageFile() throws IOException {
+        // Crear un nombre de archivo único
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(imageFileName, ".jpg", storageDir);
+        return image;
     }
 
     public static void openDrawer(DrawerLayout drawerLayout){

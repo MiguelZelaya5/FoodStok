@@ -21,7 +21,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.widget.Toolbar;
 
-import com.example.foodstok.inventario.datos;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 
