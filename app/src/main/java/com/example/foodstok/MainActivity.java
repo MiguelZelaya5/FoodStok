@@ -4,10 +4,29 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.os.Bundle;
+import android.widget.Toast;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.List;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+import java.util.List;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import androidx.recyclerview.widget.RecyclerView;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -41,17 +60,22 @@ public class MainActivity extends AppCompatActivity {
 
     private TextView info;
     TableLayout tbArticulo;
+    private RecyclerView recyclerView;
+    private DatabaseHelper databaseHelper;
+    private RecyclerViewAdapter adapter;
     FloatingActionButton fab;
     private SharedPreferences sharedPreferences;
     DrawerLayout drawerLayout;
     ImageView menu;
     LinearLayout exit,about,categoria,Almacen,home,addP;
     private Button menuButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         sharedPreferences = getSharedPreferences("session", MODE_PRIVATE);
+        databaseHelper = new DatabaseHelper(this);
         drawerLayout = findViewById(R.id.drawerLayout);
         menu=findViewById(R.id.menu);
         home=findViewById(R.id.home);
@@ -61,52 +85,6 @@ public class MainActivity extends AppCompatActivity {
         categoria=findViewById(R.id.categoria);
 
         fab = findViewById(R.id.addProducto);
-        tbArticulo = findViewById(R.id.tablaArticulo);
-        tbArticulo.removeAllViews();
-
-        RequestQueue queue = Volley.newRequestQueue(this);
-        int idUsuario=1;
-        String url = "http://192.168.1.5/android_mysq/consulta.php/";
-
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null,
-
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        try {
-                            JSONArray jsonArray = response.getJSONArray("Conexion exitosa");
-                            for (int i = 0; i < jsonArray.length(); i++) {
-                                JSONObject jsonObject = jsonArray.getJSONObject(i);
-                                View registro = LayoutInflater.from(MainActivity.this).inflate(R.layout.table_row, null, false);
-                                TextView colCategoria = registro.findViewById(R.id.colCategoria);
-                                TextView colArticulo = registro.findViewById(R.id.colArticulo);
-                                TextView colfecha = registro.findViewById(R.id.colfecha);
-                                TextView colfechacadu = registro.findViewById(R.id.colfechacadu);
-                                TextView colcantidad = registro.findViewById(R.id.colcantidad);
-                                TextView colfoto = registro.findViewById(R.id.colfoto);
-
-                                colCategoria.setText(jsonObject.getString("categoria"));
-                                colArticulo.setText(jsonObject.getString("nombrearticulo"));
-                                colfecha.setText(jsonObject.getString("fechafabricacion"));
-                                colfechacadu.setText(jsonObject.getString("fechacaducidad"));
-                                colcantidad.setText(jsonObject.getString("cantidad"));
-                                colfoto.setText(jsonObject.getString("foto"));
-                                tbArticulo.addView(registro);
-
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        // Manejar errores de la solicitud
-                    }
-                });
-
-        queue.add(jsonObjectRequest);
 
         menu.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -114,6 +92,55 @@ public class MainActivity extends AppCompatActivity {
                 openDrawer(drawerLayout);
             }
         });
+        recyclerView = findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        // Aquí debes obtener los datos de la base de datos y pasarlos al adaptador
+        // Aquí hay un ejemplo de cómo obtener los datos de una consulta a la base de datos:
+
+        // Crea una instancia de tu base de datos
+        SQLiteDatabase db = databaseHelper.getReadableDatabase();
+        int userId = getUserIdFromSharedPreferences();
+        String[] selectionArgs = new String[]{String.valueOf(userId)}; // Convertir el int a String
+
+        Cursor cursor = db.rawQuery("SELECT foto, nombrearticulo, categoria, fechafabricacion, fechacaducidad, cantidad FROM articulos WHERE id_usuario = ?", selectionArgs);
+        // Comprueba si hay resultados en el cursor
+        if (cursor != null && cursor.moveToFirst()) {
+            // Crea una lista para almacenar los datos obtenidos
+            List<DataItem> dataItems = new ArrayList<>();
+
+
+            do {
+                // Obtén los valores de cada columna en el cursor
+                byte[] foto = cursor.getBlob(0);
+                String nombre = cursor.getString(1);
+                String categoria = cursor.getString(2);
+                String fechaFabricacion = cursor.getString(3);
+                String fechaCaducidad = cursor.getString(4);
+                int cantidad = cursor.getInt(5);
+
+                // Crea un objeto DataItem con los datos obtenidos
+                DataItem dataItem = new DataItem(foto, nombre, categoria, fechaFabricacion, fechaCaducidad, cantidad);
+
+                // Agrega el objeto a la lista
+                dataItems.add(dataItem);
+
+            } while (cursor.moveToNext());
+
+            // Cierra el cursor después de usarlo
+            cursor.close();
+
+            // Crea un adaptador y configúralo en el RecyclerView
+            adapter = new RecyclerViewAdapter(dataItems);
+            recyclerView.setAdapter(adapter);
+        } else {
+            // No se encontraron datos en la base de datos
+            Toast.makeText(this, "No se encontraron datos", Toast.LENGTH_SHORT).show();
+        }
+
+        // Cierra la conexión a la base de datos después de usarla
+        db.close();
+
         home.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -181,6 +208,9 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.remove("idusuarios");
         editor.apply();
+    }
+    private int getUserIdFromSharedPreferences() {
+        return sharedPreferences.getInt("idusuarios", -1);
     }
 
 
