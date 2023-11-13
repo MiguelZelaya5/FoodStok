@@ -1,13 +1,18 @@
 package com.example.foodstok;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import android.Manifest;
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
@@ -28,6 +33,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
@@ -37,6 +43,7 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import android.content.SharedPreferences;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
@@ -104,7 +111,7 @@ public class agregar_producto extends AppCompatActivity {
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                showImageSelectionOptions();
             }
         });
 
@@ -227,46 +234,35 @@ public class agregar_producto extends AppCompatActivity {
         integrator.initiateScan();
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
-        if (result != null) {
-            if (result.getContents() == null) {
-                Toast.makeText(this, "Escaneo cancelado", Toast.LENGTH_SHORT).show();
-            } else {
-                String scannedBarcode = result.getContents();
-                Toast.makeText(this, "Código de barras escaneado: " + scannedBarcode, Toast.LENGTH_SHORT).show();
-                // Aquí puedes realizar otras acciones con el código de barras, como asignarlo a un EditText o almacenarlo en una variable.
-            }
-        } else {
-            super.onActivityResult(requestCode, resultCode, data);
-        }
-    }
 
 
     private void addProduct() {
         this.categoriaspiner();
         String nombreproducto=etProductName.getText().toString();
-        int quantity = Integer.parseInt(etQuantity.getText().toString());
-        SimpleDateFormat sdfInput = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-
-        // Obtener el texto de los TextView
-        String manufacturingDateText = tvManufacturingDate.getText().toString();
-        String expirationDateText = tvExpirationDate.getText().toString();
-
-        // Parsear las fechas del TextView al formato deseado: YYYY-MM-DD
-        SimpleDateFormat sdfOutput = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-        try {
-            Date manufacturingDate = sdfInput.parse(manufacturingDateText);
-            Date expirationDate = sdfInput.parse(expirationDateText);
-
-            // Formatear las fechas al nuevo formato
-            String manufacturingDateFormatted = sdfOutput.format(manufacturingDate);
-            String expirationDateFormatted = sdfOutput.format(expirationDate);
-
-        } catch (ParseException e) {
-            e.printStackTrace();
+        int cantidad = Integer.parseInt(etQuantity.getText().toString());
+        String fechafabricacion=tvManufacturingDate.getText().toString();
+        String fechacaducidad=tvExpirationDate.getText().toString();
+        String categoria=categoriatexto;
+        DatabaseHelper databaseHelper = new DatabaseHelper(this);
+        SQLiteDatabase database = databaseHelper.getWritableDatabase();
+        byte[] imagenCategoria = obtenerBytesDeImagen();
+        int userId = getUserIdFromSharedPreferences();
+        ContentValues values = new ContentValues();
+        values.put("categoria", categoria);
+        values.put("nombrearticulo", nombreproducto);
+        values.put("fechafabricacion", fechafabricacion);
+        values.put("fechacaducidad", fechacaducidad);
+        values.put("cantidad", cantidad);
+        values.put("foto", imagenCategoria);
+        values.put("id_usuario", userId);
+        long resultado = database.insert("articulos", null, values);
+        if (resultado != -1) {
+            Toast.makeText(this, "Categoría agregada correctamente", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "Error al agregar la categoría", Toast.LENGTH_SHORT).show();
         }
+
+        database.close();
     }
     public void categoriaspiner(){
         String escala=spincategoria.getSelectedItem().toString();
@@ -289,34 +285,109 @@ public class agregar_producto extends AppCompatActivity {
             categoriatexto="Aderezo";
         }
     }
+    private void showImageSelectionOptions() {
+        String[] options = {"Tomar fotografía", "Seleccionar de la galería"};
 
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Seleccionar imagen");
+        builder.setItems(options, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (which == 0) {
+                    checkCameraPermission();
+                } else if (which == 1) {
+                    checkStoragePermission();
+                }
+            }
+        });
+        builder.show();
+    }
+    private void checkCameraPermission() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, PERMISSION_REQUEST_CAMERA);
+        } else {
+            dispatchTakePictureIntent();
+        }
+    }
+    private void checkStoragePermission() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISSION_REQUEST_STORAGE);
+        } else {
+            dispatchPickImageIntent();
+        }
+    }
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-            // Creamos un archivo temporal para guardar la imagen
-            File photoFile = null;
-            try {
-                photoFile = createImageFile();
-            } catch (IOException ex) {
-                // Manejar la excepción, si ocurre
-            }
+        if (takePictureIntent.resolveActivity(this.getPackageManager()) != null) {
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        }
+    }
+    private void dispatchPickImageIntent() {
+        Intent pickImageIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        pickImageIntent.setType("image/*");
+        startActivityForResult(pickImageIntent, REQUEST_PICK_IMAGE);
+    }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
-            if (photoFile != null) {
-                Uri photoURI = FileProvider.getUriForFile(this, "com.example.android.fileprovider", photoFile);
-                imageFilePath = photoFile.getAbsolutePath();
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            showSelectedImage(imageBitmap);
+        } else if (requestCode == REQUEST_PICK_IMAGE && resultCode == Activity.RESULT_OK) {
+            if (data != null) {
+                Uri selectedImageUri = data.getData();
+                showSelectedImage(selectedImageUri);
             }
         }
     }
-    private File createImageFile() throws IOException {
-        // Crear un nombre de archivo único
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_";
-        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File image = File.createTempFile(imageFileName, ".jpg", storageDir);
-        return image;
+    private void showSelectedImage(Bitmap imageBitmap) {
+        imageView.setImageBitmap(imageBitmap);
     }
+
+    private void showSelectedImage(Uri selectedImageUri) {
+        Glide.with(this)
+                .load(selectedImageUri)
+                .into(imageView);
+    }
+    private byte[] obtenerBytesDeImagen() {
+        Bitmap bitmap = null;
+        try {
+            bitmap = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        if (bitmap != null) {
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+            return stream.toByteArray();
+        }
+
+        return null;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == PERMISSION_REQUEST_CAMERA) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                dispatchTakePictureIntent();
+            } else {
+                Toast.makeText(this, "Permiso de cámara denegado", Toast.LENGTH_SHORT).show();
+            }
+        } else if (requestCode == PERMISSION_REQUEST_STORAGE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                dispatchPickImageIntent();
+            } else {
+                Toast.makeText(this, "Permiso de almacenamiento denegado", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+
 
     public static void openDrawer(DrawerLayout drawerLayout){
         drawerLayout.openDrawer(GravityCompat.START);
@@ -338,6 +409,9 @@ public class agregar_producto extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         closeDrawer(drawerLayout);
+    }
+    private int getUserIdFromSharedPreferences() {
+        return sharedPreferences.getInt("idusuarios", -1);
     }
 
 }
