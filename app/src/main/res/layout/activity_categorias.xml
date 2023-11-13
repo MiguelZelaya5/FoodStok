@@ -19,6 +19,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
             <TextView
                 android:id="@+id/textViewTitulo"
                 android:layout_width="0dp"
@@ -50,12 +51,14 @@
                 app:layout_constraintTop_toBottomOf="@id/textViewTitulo"
                 tools:ignore="RtlHardcoded,RtlSymmetry,VisualLintTextFieldSize" />
 
-            <ImageView
+            <ImageButton
                 android:id="@+id/btnMicrofono"
                 android:layout_width="40dp"
-                android:layout_height="47dp"
+                android:layout_height="48dp"
                 android:background="?android:attr/selectableItemBackground"
                 android:contentDescription="@string/todo"
+                android:onClick="onClickImgBtnMicrofono"
+                android:scaleType="fitCenter"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/textViewTitulo"
                 app:srcCompat="@drawable/mic" />
@@ -69,6 +72,7 @@
                 android:gravity="center"
                 android:text="@string/no_articulos"
                 android:textColorHint="#757575"
+                android:textSize="16sp"
                 android:visibility="visible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -87,9 +91,17 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:pressedTranslationZ="12dp"
                 app:srcCompat="@drawable/mas" />
+
+            <Button
+                android:id="@+id/btnBuscar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="48dp"
+                android:text="Buscar"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/editTextBuscar" />
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-
 
     </LinearLayout>
 

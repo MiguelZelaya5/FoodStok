@@ -143,13 +143,6 @@ public class agregar_producto extends AppCompatActivity {
             }
         });
 
-        btnScanBarcode.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                scanBarcode();
-            }
-        });
-
         btnAddProduct.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
