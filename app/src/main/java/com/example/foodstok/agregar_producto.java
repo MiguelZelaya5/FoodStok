@@ -4,7 +4,9 @@ import androidx.core.content.ContextCompat;
 import android.Manifest;
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -13,10 +15,10 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.util.Base64;
+
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
+
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -25,13 +27,6 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
-
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.zxing.integration.android.IntentIntegrator;
@@ -40,29 +35,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-
-import com.journeyapps.barcodescanner.CaptureActivity;
-import android.content.Intent;
-import com.google.zxing.integration.android.IntentIntegrator;
-import com.google.zxing.integration.android.IntentResult;
+import android.content.SharedPreferences;
 
 import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.zxing.integration.android.IntentIntegrator;
-import com.google.zxing.integration.android.IntentResult;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
 
-import java.io.ByteArrayOutputStream;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
@@ -79,7 +59,7 @@ public class agregar_producto extends AppCompatActivity {
     private TextView tvManufacturingDate, tvExpirationDate;
     private Spinner spincategoria;
     private String imageFilePath = "";
-    private ImageView ivProductImage;
+    private ImageView imageView;
     private Button btnDecrease, btnIncrease, btnScanBarcode, btnAddProduct;
 
     private int mYear, mMonth, mDay;
@@ -90,20 +70,24 @@ public class agregar_producto extends AppCompatActivity {
 
     // Constante para la solicitud de permiso de cámara
     private static final int MY_PERMISSIONS_REQUEST_CAMERA = 2;
+    private static final int REQUEST_PICK_IMAGE = 2;
+    private static final int PERMISSION_REQUEST_CAMERA = 3;
+    private static final int PERMISSION_REQUEST_STORAGE = 4;
+    private SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_agregar_producto);
-
+        sharedPreferences = this.getSharedPreferences("session", Context.MODE_PRIVATE);
         etProductName = findViewById(R.id.etProductName);
         etQuantity = findViewById(R.id.etQuantity);
         tvManufacturingDate = findViewById(R.id.tvManufacturingDate);
         tvExpirationDate = findViewById(R.id.tvExpirationDate);
-        ivProductImage = findViewById(R.id.ivProductImage);
+        imageView = findViewById(R.id.ivProductImage);
         btnDecrease = findViewById(R.id.btnDecrease);
         btnIncrease = findViewById(R.id.btnIncrease);
-        btnScanBarcode = findViewById(R.id.btnScanBarcode);
         btnAddProduct = findViewById(R.id.btnAddProduct);
         etQuantity.setText("0");
         spincategoria=findViewById(R.id.spinn_categorias);
@@ -117,17 +101,10 @@ public class agregar_producto extends AppCompatActivity {
 
         fab = findViewById(R.id.addProducto);
 
-        ivProductImage.setOnClickListener(new View.OnClickListener() {
+        imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                if (ContextCompat.checkSelfPermission(agregar_producto.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-
-                    ActivityCompat.requestPermissions(agregar_producto.this, new String[]{Manifest.permission.CAMERA}, MY_PERMISSIONS_REQUEST_CAMERA);
-                } else {
-
-                    dispatchTakePictureIntent();
-                }
             }
         });
 
@@ -269,10 +246,8 @@ public class agregar_producto extends AppCompatActivity {
 
     private void addProduct() {
         this.categoriaspiner();
-        String url = "http://192.168.1.6/android_mysq/insertararticulos.php";
-
-        RequestQueue queue = Volley.newRequestQueue(this);
-
+        String nombreproducto=etProductName.getText().toString();
+        int quantity = Integer.parseInt(etQuantity.getText().toString());
         SimpleDateFormat sdfInput = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
 
         // Obtener el texto de los TextView
@@ -288,39 +263,6 @@ public class agregar_producto extends AppCompatActivity {
             // Formatear las fechas al nuevo formato
             String manufacturingDateFormatted = sdfOutput.format(manufacturingDate);
             String expirationDateFormatted = sdfOutput.format(expirationDate);
-
-            StringRequest request = new StringRequest(Request.Method.POST, url,
-                    new Response.Listener<String>() {
-                        @Override
-                        public void onResponse(String response) {
-                            Toast.makeText(agregar_producto.this, "Producto agregado exitosamente", Toast.LENGTH_LONG).show();
-                        }
-                    },
-                    new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            Toast.makeText(agregar_producto.this, "Error al agregar el producto: " + error, Toast.LENGTH_LONG).show();
-                        }
-                    }
-            ) {
-                @Override
-                protected Map<String, String> getParams() {
-                    Map<String, String> parameters = new HashMap<>();
-                    parameters.put("categoria", categoriatexto);
-                    parameters.put("nombrearticulo", etProductName.getText().toString());
-                    parameters.put("fechafabricacion", manufacturingDateFormatted);
-                    parameters.put("fechacaducidad", expirationDateFormatted);
-                    parameters.put("cantidad", etQuantity.getText().toString());
-                    parameters.put("foto", imageFilePath);
-
-                    // Otros parámetros necesarios
-                    parameters.put("id_usuario", "1"); // Por ejemplo
-
-                    return parameters;
-                }
-            };
-
-            queue.add(request);
 
         } catch (ParseException e) {
             e.printStackTrace();
