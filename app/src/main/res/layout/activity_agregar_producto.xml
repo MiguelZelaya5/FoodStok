@@ -134,6 +134,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/bg_spinner_cat"
             android:dropDownVerticalOffset="40dp"
+            android:entries="@array/escala"
             android:minHeight="48dp" />
 
         <ImageView

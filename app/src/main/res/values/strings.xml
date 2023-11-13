@@ -31,4 +31,12 @@
     <string name="cantidad">Cantidad</string>
     <string name="escanear_c_digo_de_barras">Escanear código de barras</string>
     <string name="a_adir_producto">Añadir producto</string>
+    <string-array name="escala">
+        <item>Carnes</item>
+        <item>Lacteos</item>
+        <item>Vegetales</item>
+        <item>Fruta</item>
+        <item>Aderezo</item>
+
+    </string-array>
 </resources>

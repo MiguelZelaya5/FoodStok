@@ -7,6 +7,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -42,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView info;
     TableLayout tbArticulo;
     FloatingActionButton fab;
+    private SharedPreferences sharedPreferences;
     DrawerLayout drawerLayout;
     ImageView menu;
     LinearLayout exit,about,categoria,Almacen,home,addP;
@@ -50,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        sharedPreferences = getSharedPreferences("session", MODE_PRIVATE);
         drawerLayout = findViewById(R.id.drawerLayout);
         menu=findViewById(R.id.menu);
         home=findViewById(R.id.home);
@@ -141,6 +143,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Toast.makeText(MainActivity.this, "LogOut", Toast.LENGTH_SHORT).show();
+                logout();
             }
         });
 
@@ -153,6 +156,32 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+    }
+    private void logout() {
+        // Realizar aquí las tareas de cierre de sesión, como borrar datos de sesión, etc.
+        setLoggedIn(false); // Establecer el estado de inicio de sesión como falso o cerrado
+        clearUserId(); // Borrar el ID del usuario guardado en SharedPreferences
+
+        // Redirigir a la pantalla de inicio de sesión (Login)
+        Intent intent = new Intent(MainActivity.this, Sesion.class);
+        startActivity(intent);
+        finish(); // Cerrar la actividad actual (Inicio)
+    }
+
+    private void setLoggedIn(boolean isLoggedIn) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean("isLoggedIn", isLoggedIn);
+        editor.apply();
+    }
+
+    private boolean isUserLoggedIn() {
+        return sharedPreferences.getBoolean("isLoggedIn", false);
+    }
+
+    private void clearUserId() {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.remove("idusuarios");
+        editor.apply();
     }
 
 
