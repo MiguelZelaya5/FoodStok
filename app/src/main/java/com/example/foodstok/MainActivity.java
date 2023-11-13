@@ -103,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
         int userId = getUserIdFromSharedPreferences();
         String[] selectionArgs = new String[]{String.valueOf(userId)}; // Convertir el int a String
 
-        Cursor cursor = db.rawQuery("SELECT foto, nombrearticulo, categoria, fechafabricacion, fechacaducidad, cantidad FROM articulos WHERE id_usuario = ?", selectionArgs);
+        Cursor cursor = db.rawQuery("SELECT foto, nombrearticulo, categoria, fechafabricacion, fechacaducidad, cantidad,idarticulo FROM articulos WHERE id_usuario = ?", selectionArgs);
         // Comprueba si hay resultados en el cursor
         if (cursor != null && cursor.moveToFirst()) {
             // Crea una lista para almacenar los datos obtenidos
@@ -118,9 +118,10 @@ public class MainActivity extends AppCompatActivity {
                 String fechaFabricacion = cursor.getString(3);
                 String fechaCaducidad = cursor.getString(4);
                 int cantidad = cursor.getInt(5);
+                String idarticulo=cursor.getString(6);
 
                 // Crea un objeto DataItem con los datos obtenidos
-                DataItem dataItem = new DataItem(foto, nombre, categoria, fechaFabricacion, fechaCaducidad, cantidad);
+                DataItem dataItem = new DataItem(foto, nombre, categoria, fechaFabricacion, fechaCaducidad, cantidad,idarticulo);
 
                 // Agrega el objeto a la lista
                 dataItems.add(dataItem);

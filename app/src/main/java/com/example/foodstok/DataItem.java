@@ -7,14 +7,16 @@ public class DataItem {
     private String fechaFabricacion;
     private String fechaCaducidad;
     private int cantidad;
+    private String idarticulo;
 
-    public DataItem(byte[] foto, String nombre, String categoria, String fechaFabricacion, String fechaCaducidad, int cantidad) {
+    public DataItem(byte[] foto, String nombre, String categoria, String fechaFabricacion, String fechaCaducidad, int cantidad,String idarticulo) {
         this.foto = foto;
         this.nombre = nombre;
         this.categoria = categoria;
         this.fechaFabricacion = fechaFabricacion;
         this.fechaCaducidad = fechaCaducidad;
         this.cantidad = cantidad;
+        this.idarticulo=idarticulo;
     }
 
     public byte[] getFoto() {
@@ -40,4 +42,9 @@ public class DataItem {
     public int getCantidad() {
         return cantidad;
     }
+    public String getidarticulo() {
+        return idarticulo;
+    }
+
+
 }
