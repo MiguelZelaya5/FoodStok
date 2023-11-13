@@ -1,5 +1,7 @@
 package com.example.foodstok;
 
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -62,6 +64,16 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             fabricacionTextView = itemView.findViewById(R.id.fabricacionTextView);
             caducidadTextView = itemView.findViewById(R.id.caducidadTextView);
             cantidadTextView = itemView.findViewById(R.id.cantidadTextView);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Context context = v.getContext();
+                    Intent intent = new Intent(context, LlenarProducto.class);
+                    intent.putExtra("Id", dataItems.get(getAdapterPosition()).getidarticulo());
+                    context.startActivity(intent);
+                }
+            });
         }
     }
 }

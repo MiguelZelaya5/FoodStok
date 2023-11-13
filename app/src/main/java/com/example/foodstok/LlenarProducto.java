@@ -1,0 +1,68 @@
+package com.example.foodstok;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.graphics.BitmapFactory;
+import android.os.Bundle;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+public class LlenarProducto extends AppCompatActivity {
+
+    private ImageView imageView;
+    private DatabaseHelper databaseHelper;
+    private TextView nombreTextView, categoriaTextView, fabricacionTextView, caducidadTextView, cantidadTextView;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_llenar_producto);
+
+        // Obtén referencias a los elementos de la vista en la actividad LlenarProducto
+        imageView = findViewById(R.id.ivProductImage);
+        nombreTextView = findViewById(R.id.etProductName);
+        categoriaTextView = findViewById(R.id.etCategory);
+        fabricacionTextView = findViewById(R.id.fabricacionTextView);
+        caducidadTextView = findViewById(R.id.caducidadTextView);
+        cantidadTextView = findViewById(R.id.cantidadTextView);
+
+        // Obtén el Id del artículo de la intent
+        String idArticulo = getIntent().getStringExtra("Id");
+
+        // Crea una instancia de tu base de datos
+        SQLiteDatabase db = databaseHelper.getReadableDatabase();
+
+        // Realiza una nueva consulta para obtener detalles del artículo específico
+        Cursor cursor = db.rawQuery("SELECT foto, nombrearticulo, categoria, fechafabricacion, fechacaducidad, cantidad, idarticulo FROM articulos WHERE idarticulo = ?", new String[]{idArticulo});
+
+        // Comprueba si hay resultados en el cursor
+        if (cursor != null && cursor.moveToFirst()) {
+            // Obtén los valores de cada columna en el cursor
+            byte[] foto = cursor.getBlob(0);
+            String nombre = cursor.getString(1);
+            String categoria = cursor.getString(2);
+            String fechaFabricacion = cursor.getString(3);
+            String fechaCaducidad = cursor.getString(4);
+            int cantidad = cursor.getInt(5);
+            String idarticulo = cursor.getString(6);
+
+            // Actualiza los elementos de la vista con la información obtenida
+            imageView.setImageBitmap(BitmapFactory.decodeByteArray(foto, 0, foto.length));
+            nombreTextView.setText(nombre);
+            categoriaTextView.setText(categoria);
+            fabricacionTextView.setText(fechaFabricacion);
+            caducidadTextView.setText(fechaCaducidad);
+            cantidadTextView.setText(String.valueOf(cantidad));
+
+            // Cierra el cursor después de usarlo
+            cursor.close();
+        }
+
+        // Cierra la conexión a la base de datos después de usarla
+        db.close();
+    }
+
+
+}

@@ -16,9 +16,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 
 import android.util.Log;
@@ -36,24 +34,13 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.zxing.integration.android.IntentIntegrator;
-import com.google.zxing.integration.android.IntentResult;
+
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.FileProvider;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import android.content.SharedPreferences;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
 
 public class agregar_producto extends AppCompatActivity {
 
@@ -97,7 +84,7 @@ public class agregar_producto extends AppCompatActivity {
         btnIncrease = findViewById(R.id.btnIncrease);
         btnAddProduct = findViewById(R.id.btnAddProduct);
         etQuantity.setText("0");
-        spincategoria=findViewById(R.id.spinn_categorias);
+        spincategoria=findViewById(R.id.etCategory);
         drawerLayout = findViewById(R.id.drawerLayout);
         menu=findViewById(R.id.menu);
         home=findViewById(R.id.home);
