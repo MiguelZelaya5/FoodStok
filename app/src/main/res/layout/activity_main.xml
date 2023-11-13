@@ -22,6 +22,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/addProducto"
                 android:layout_width="wrap_content"
@@ -34,6 +35,33 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:pressedTranslationZ="12dp"
                 app:srcCompat="@drawable/mas" />
+
+            <TableLayout
+                android:id="@+id/tablaArticulo"
+                android:layout_width="match_parent"
+                android:layout_height="400dp"
+                android:layout_marginStart="1dp"
+                android:layout_marginEnd="1dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </TableLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </LinearLayout>
