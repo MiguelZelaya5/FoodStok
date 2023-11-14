@@ -59,8 +59,8 @@ public class LlenarProducto extends AppCompatActivity {
                 imageView.setImageBitmap(BitmapFactory.decodeByteArray(foto, 0, foto.length));
                 nombreTextView.setText("Nombre de producto: "+nombre);
                 categoriaTextView.setText("Categoria: "+categoria);
-                fabricacionTextView.setText("Fecha fabricación "+fechaFabricacion);
-                caducidadTextView.setText("Fecha Caducidad "+fechaCaducidad);
+                fabricacionTextView.setText("Fecha fabricación: "+fechaFabricacion);
+                caducidadTextView.setText("Fecha Caducidad: "+fechaCaducidad);
                 String cantidads;
                 cantidads=String.valueOf(cantidad);
                 cantidadTextView.setText("Cantidad: "+cantidads);
