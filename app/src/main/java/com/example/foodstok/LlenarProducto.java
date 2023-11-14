@@ -2,6 +2,7 @@ package com.example.foodstok;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.BitmapFactory;
@@ -13,12 +14,16 @@ public class LlenarProducto extends AppCompatActivity {
 
     private ImageView imageView;
     private DatabaseHelper databaseHelper;
+    private SharedPreferences sharedPreferences;
+
     private TextView nombreTextView, categoriaTextView, fabricacionTextView, caducidadTextView, cantidadTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_llenar_producto);
+        sharedPreferences = getSharedPreferences("session", MODE_PRIVATE);
+        databaseHelper = new DatabaseHelper(this);
 
         // Obtén referencias a los elementos de la vista en la actividad LlenarProducto
         imageView = findViewById(R.id.ivProductImage);
