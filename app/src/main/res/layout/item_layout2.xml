@@ -8,8 +8,8 @@
     android:textAlignment="center">
 
     <androidx.cardview.widget.CardView
-        android:layout_width="395dp"
-        android:layout_height="248dp"
+        android:layout_width="406dp"
+        android:layout_height="232dp"
         app:cardElevation="8dp"
         app:cardUseCompatPadding="true"
         app:layout_constraintEnd_toEndOf="parent"
@@ -36,15 +36,19 @@
             <TextView
                 android:id="@+id/nombreTextView"
                 android:layout_width="389dp"
-                android:layout_height="33dp"
+                android:layout_height="wrap_content"
                 android:background="#66000000"
                 android:gravity="center"
                 android:text="Articulo"
                 android:textColor="#FFFFFF"
                 android:textSize="30sp"
-                app:layout_constraintBottom_toTopOf="@+id/row_delete"
+
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageView"
+                app:layout_constraintVertical_bias="0.039" />
 
             <TextView
                 android:id="@+id/categoriaTextView"
@@ -70,17 +74,6 @@
                 app:layout_constraintBottom_toTopOf="@+id/caducidadTextView"
                 app:layout_constraintStart_toStartOf="parent" />
 
-
-            <ImageButton
-                android:id="@+id/row_delete"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="1dp"
-                android:backgroundTint="@color/design_default_color_background"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:srcCompat="@android:drawable/ic_menu_delete"
-                tools:ignore="SpeakableTextPresentCheck" />
 
             <TextView
                 android:id="@+id/caducidadTextView"

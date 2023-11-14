@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
     private SharedPreferences sharedPreferences;
     DrawerLayout drawerLayout;
     ImageView menu;
-    LinearLayout exit,about,categoria,Almacen,home,addP;
+    LinearLayout exit,about,categoria,Almacen,home,listCompras;
     private Button menuButton;
 
     @Override

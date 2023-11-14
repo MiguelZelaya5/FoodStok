@@ -1,19 +1,28 @@
 package com.example.foodstok;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.database.sqlite.SQLiteDatabase;
+import android.widget.Toast;
 
 public class LlenarProducto extends AppCompatActivity {
 
     private ImageView imageView;
+    private Button btnDelete;
     private DatabaseHelper databaseHelper;
     private SharedPreferences sharedPreferences;
 
@@ -25,7 +34,7 @@ public class LlenarProducto extends AppCompatActivity {
         setContentView(R.layout.activity_llenar_producto);
         sharedPreferences = getSharedPreferences("session", MODE_PRIVATE);
         databaseHelper = new DatabaseHelper(this);
-
+        btnDelete=findViewById(R.id.btnEliminar);
         // Obtén referencias a los elementos de la vista en la actividad LlenarProducto
         imageView = findViewById(R.id.ivProductImage);
         nombreTextView = findViewById(R.id.etProductName);
@@ -42,10 +51,8 @@ public class LlenarProducto extends AppCompatActivity {
 
         Cursor cursor = null;
         try {
-            // Realiza una nueva consulta para obtener detalles del artículo específico
-            cursor = db.rawQuery("SELECT foto, nombrearticulo, categoria, fechafabricacion, fechacaducidad, cantidad, idarticulo FROM articulos WHERE idarticulo = ?", new String[]{idArticulo});
+            cursor = db.rawQuery("SELECT foto, nombrearticulo, categoria, fechafabricacion, fechacaducidad, cantidad, idarticulo FROM articulos WHERE idarticulo = ? LIMIT 1", new String[]{idArticulo});
 
-            // Comprueba si hay resultados en el cursor
             if (cursor != null && cursor.moveToFirst()) {
                 // Obtén los valores de cada columna en el cursor
                 byte[] foto = cursor.getBlob(0);
@@ -55,7 +62,7 @@ public class LlenarProducto extends AppCompatActivity {
                 String fechaCaducidad = cursor.getString(4);
                 int cantidad = cursor.getInt(5);
 
-                // Actualiza los elementos de la vista con la información obtenida
+
                 imageView.setImageBitmap(BitmapFactory.decodeByteArray(foto, 0, foto.length));
                 nombreTextView.setText("Nombre de producto: "+nombre);
                 categoriaTextView.setText("Categoria: "+categoria);
@@ -70,13 +77,58 @@ public class LlenarProducto extends AppCompatActivity {
         } catch (Exception e) {
             Log.e("LlenarProducto", "Error al acceder a la base de datos: " + e.getMessage());
         } finally {
-            // Cierra el cursor después de usarlo
+
             if (cursor != null) {
                 cursor.close();
             }
 
-            // Cierra la conexión a la base de datos después de usarla
             db.close();
         }
+
+        btnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(LlenarProducto.this);
+                builder.setMessage("¿Desea eliminar este contacto?")
+                        .setPositiveButton("SI", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                eliminar();
+                                Intent intent = new Intent(LlenarProducto.this, MainActivity.class);
+                                startActivity(intent);
+                                finish();
+                            }
+                        }).setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Toast.makeText(LlenarProducto.this, "Cancelado", Toast.LENGTH_SHORT).show();
+                            }
+                        }).show();
+            }
+        });
+
     }
+
+    public void eliminar() {
+        String idArticulo = getIntent().getStringExtra("Id");
+        DatabaseHelper databaseHelper = new DatabaseHelper(this);
+        SQLiteDatabase database = databaseHelper.getWritableDatabase();
+
+        String selection = "idarticulo = ?";
+        String[] selectionArgs = {String.valueOf(idArticulo)};
+
+        int rowsDeleted = database.delete("articulos", selection, selectionArgs);
+
+        if (rowsDeleted > 0) {
+            Toast.makeText(this, "Producto eliminado correctamente", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "Error al eliminar el producto", Toast.LENGTH_SHORT).show();
+        }
+
+        database.close();
+    }
+
+
+
+
 }
