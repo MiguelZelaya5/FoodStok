@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,6 +16,8 @@ public class Registro extends AppCompatActivity {
 
     private EditText nombre, apellidos, correo, contrasena;
     private Button btn_registro;
+
+    private TextView inises;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +29,13 @@ public class Registro extends AppCompatActivity {
         correo = findViewById(R.id.Correo);
         contrasena = findViewById(R.id.contra);
         btn_registro = findViewById(R.id.btn_iniciar);
+
+        inises.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                siguiente();
+            }
+        });
 
         btn_registro.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,6 +82,12 @@ public class Registro extends AppCompatActivity {
         db.close();
 
         return result != -1;
+    }
+
+    private void siguiente(){
+        Intent intent = new Intent(this, Sesion.class);
+        startActivity(intent);
+        finish();
     }
 
     @Override

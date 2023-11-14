@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.database.sqlite.SQLiteDatabase;
 import androidx.appcompat.app.AppCompatActivity;
@@ -30,11 +31,14 @@ public class Sesion extends AppCompatActivity {
     private SharedPreferences sharedPreferences;
     private Button iniciarSesionButton;
 
+    private TextView inises;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sesion);
 
+        inises = findViewById(R.id.inise);
         correoEditText = findViewById(R.id.Correo);
         contraEditText = findViewById(R.id.contra);
         databaseHelper = new DatabaseHelper(this);
@@ -44,6 +48,13 @@ public class Sesion extends AppCompatActivity {
             redirectToHome(Sesion.this, MainActivity.class); // Redirigir a la actividad de inicio directamente
         }
         iniciarSesionButton = findViewById(R.id.btn_iniciar);
+
+        inises.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                siguiente();
+            }
+        });
 
         iniciarSesionButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,6 +102,12 @@ public class Sesion extends AppCompatActivity {
         }
 
         return userId;
+    }
+
+    private void siguiente(){
+        Intent intent = new Intent(this, Registro.class);
+        startActivity(intent);
+        finish();
     }
 
 
