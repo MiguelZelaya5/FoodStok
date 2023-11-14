@@ -105,7 +105,7 @@ public class Categorias extends AppCompatActivity {
         DatabaseHelper databaseHelper = new DatabaseHelper(this);
         SQLiteDatabase db = databaseHelper.getWritableDatabase();
 
-        String query = "SELECT * FROM articulos WHERE categoria = ?";
+        String query = "SELECT * FROM articulos WHERE categoria LIKE ?";
         Cursor cursor = db.rawQuery(query, new String[]{categoria});
 
         StringBuilder resultado = new StringBuilder();
@@ -159,6 +159,9 @@ public class Categorias extends AppCompatActivity {
                             .getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
                     String strSpeech2Text = speech.get(0);
                     grabar.setText(strSpeech2Text);
+
+                    // Llamar a la acción del botón después de reconocimiento de voz
+                    btnBuscar.performClick();
                 }
                 break;
             default:
