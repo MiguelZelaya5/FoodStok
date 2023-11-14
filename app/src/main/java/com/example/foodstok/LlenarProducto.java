@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -39,35 +40,41 @@ public class LlenarProducto extends AppCompatActivity {
         // Crea una instancia de tu base de datos
         SQLiteDatabase db = databaseHelper.getReadableDatabase();
 
-        // Realiza una nueva consulta para obtener detalles del artículo específico
-        Cursor cursor = db.rawQuery("SELECT foto, nombrearticulo, categoria, fechafabricacion, fechacaducidad, cantidad, idarticulo FROM articulos WHERE idarticulo = ?", new String[]{idArticulo});
+        Cursor cursor = null;
+        try {
+            // Realiza una nueva consulta para obtener detalles del artículo específico
+            cursor = db.rawQuery("SELECT foto, nombrearticulo, categoria, fechafabricacion, fechacaducidad, cantidad, idarticulo FROM articulos WHERE idarticulo = ?", new String[]{idArticulo});
 
-        // Comprueba si hay resultados en el cursor
-        if (cursor != null && cursor.moveToFirst()) {
-            // Obtén los valores de cada columna en el cursor
-            byte[] foto = cursor.getBlob(0);
-            String nombre = cursor.getString(1);
-            String categoria = cursor.getString(2);
-            String fechaFabricacion = cursor.getString(3);
-            String fechaCaducidad = cursor.getString(4);
-            int cantidad = cursor.getInt(5);
-            String idarticulo = cursor.getString(6);
+            // Comprueba si hay resultados en el cursor
+            if (cursor != null && cursor.moveToFirst()) {
+                // Obtén los valores de cada columna en el cursor
+                byte[] foto = cursor.getBlob(0);
+                String nombre = cursor.getString(1);
+                String categoria = cursor.getString(2);
+                String fechaFabricacion = cursor.getString(3);
+                String fechaCaducidad = cursor.getString(4);
+                int cantidad = cursor.getInt(5);
 
-            // Actualiza los elementos de la vista con la información obtenida
-            imageView.setImageBitmap(BitmapFactory.decodeByteArray(foto, 0, foto.length));
-            nombreTextView.setText(nombre);
-            categoriaTextView.setText(categoria);
-            fabricacionTextView.setText(fechaFabricacion);
-            caducidadTextView.setText(fechaCaducidad);
-            cantidadTextView.setText(String.valueOf(cantidad));
-
+                // Actualiza los elementos de la vista con la información obtenida
+                imageView.setImageBitmap(BitmapFactory.decodeByteArray(foto, 0, foto.length));
+                nombreTextView.setText(nombre);
+                categoriaTextView.setText(categoria);
+                fabricacionTextView.setText(fechaFabricacion);
+                caducidadTextView.setText(fechaCaducidad);
+                cantidadTextView.setText(String.valueOf(cantidad));
+            } else {
+                Log.e("LlenarProducto", "No se encontraron resultados para el ID del artículo: " + idArticulo);
+            }
+        } catch (Exception e) {
+            Log.e("LlenarProducto", "Error al acceder a la base de datos: " + e.getMessage());
+        } finally {
             // Cierra el cursor después de usarlo
-            cursor.close();
+            if (cursor != null) {
+                cursor.close();
+            }
+
+            // Cierra la conexión a la base de datos después de usarla
+            db.close();
         }
-
-        // Cierra la conexión a la base de datos después de usarla
-        db.close();
     }
-
-
 }
