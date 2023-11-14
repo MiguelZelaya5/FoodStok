@@ -105,7 +105,7 @@ public class Categorias extends AppCompatActivity {
         DatabaseHelper databaseHelper = new DatabaseHelper(this);
         SQLiteDatabase db = databaseHelper.getWritableDatabase();
 
-        String query = "SELECT * FROM articulos WHERE categoria = ?";
+        String query = "SELECT * FROM articulos WHERE categoria LIKE ?";
         Cursor cursor = db.rawQuery(query, new String[]{categoria});
 
         StringBuilder resultado = new StringBuilder();
@@ -168,7 +168,6 @@ public class Categorias extends AppCompatActivity {
                 break;
         }
     }
-
 
     public void onClickImgBtnMicrofono(View v) {
         Intent intentActionRecognizeSpeech = new Intent(
