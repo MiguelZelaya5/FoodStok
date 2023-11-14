@@ -57,11 +57,13 @@ public class LlenarProducto extends AppCompatActivity {
 
                 // Actualiza los elementos de la vista con la información obtenida
                 imageView.setImageBitmap(BitmapFactory.decodeByteArray(foto, 0, foto.length));
-                nombreTextView.setText(nombre);
-                categoriaTextView.setText(categoria);
-                fabricacionTextView.setText(fechaFabricacion);
-                caducidadTextView.setText(fechaCaducidad);
-                cantidadTextView.setText(String.valueOf(cantidad));
+                nombreTextView.setText("Nombre de producto:"+nombre);
+                categoriaTextView.setText("Categoria: "+categoria);
+                fabricacionTextView.setText("Fecha fabricación"+fechaFabricacion);
+                caducidadTextView.setText("Fecha Caducidad"+fechaCaducidad);
+                String cantidads;
+                cantidads=String.valueOf(cantidad);
+                cantidadTextView.setText("Cantidad: "+cantidads);
             } else {
                 Log.e("LlenarProducto", "No se encontraron resultados para el ID del artículo: " + idArticulo);
             }
