@@ -9,19 +9,45 @@
     tools:context=".Categorias">
 
     <LinearLayout
+        android:id="@+id/linear"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <include
-            layout="@layout/toolbar"/>
+        <include layout="@layout/toolbar"/>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toTopOf="@+id/tvCantidad"
+            app:layout_constraintEnd_toStartOf="@+id/imageViewArticulo"
+            app:layout_constraintStart_toStartOf="@+id/imageViewArticulo"
+            app:layout_constraintTop_toTopOf="@+id/tvCantidad">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="403dp"
+                android:layout_height="402dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="88dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btnBuscar" />
+
+            <ImageView
+                android:id="@+id/imageViewArticulo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toTopOf="@+id/tvNarticulo"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/tvNarticulo" />
 
             <TextView
-                android:id="@+id/textViewTitulo"
+                android:id="@+id/tvCaducidad"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:padding="16dp"
@@ -36,7 +62,7 @@
             <EditText
                 android:id="@+id/editTextBuscar"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:autofillHints=""
                 android:background="@android:color/transparent"
                 android:hint="@string/buscar"
@@ -46,44 +72,31 @@
                 android:paddingLeft="10dp"
                 android:paddingTop="10dp"
                 android:textSize="22sp"
-                app:layout_constraintEnd_toStartOf="@id/btnMicrofono"
+                app:layout_constraintBottom_toBottomOf="@+id/btnMicrofono"
+                app:layout_constraintEnd_toStartOf="@+id/btnMicrofono"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/textViewTitulo"
-                tools:ignore="RtlHardcoded,RtlSymmetry,VisualLintTextFieldSize" />
+                app:layout_constraintTop_toTopOf="@+id/btnMicrofono" />
 
             <ImageButton
                 android:id="@+id/btnMicrofono"
-                android:layout_width="40dp"
-                android:layout_height="48dp"
+                android:layout_width="61dp"
+                android:layout_height="49dp"
+                android:layout_marginTop="55dp"
                 android:background="?android:attr/selectableItemBackground"
                 android:contentDescription="@string/todo"
                 android:onClick="onClickImgBtnMicrofono"
                 android:scaleType="fitCenter"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/textViewTitulo"
+                app:layout_constraintStart_toEndOf="@+id/editTextBuscar"
+                app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/mic" />
-
-            <TextView
-                android:id="@+id/textViewNoArticulos"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:drawablePadding="4dp"
-                android:gravity="center"
-                android:text="@string/no_articulos"
-                android:textColorHint="#757575"
-                android:textSize="16sp"
-                android:visibility="visible"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/ItemAgregar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="14dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="16dp"
                 android:backgroundTint="@android:color/darker_gray"
                 android:contentDescription="@string/btnAgg"
                 app:elevation="6dp"
@@ -96,11 +109,11 @@
                 android:id="@+id/btnBuscar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="48dp"
+                android:layout_marginTop="15dp"
                 android:text="Buscar"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/editTextBuscar" />
+                app:layout_constraintTop_toBottomOf="@+id/editTextBuscar" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </LinearLayout>
@@ -109,16 +122,11 @@
         android:layout_width="300dp"
         android:layout_height="match_parent"
         android:background="@color/white"
-        android:layout_gravity = "start">
+        android:layout_gravity="start">
 
-        <include
-            layout="@layout/nav_drawer"/>
-
+        <include layout="@layout/nav_drawer"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-
-
-
 </androidx.drawerlayout.widget.DrawerLayout>
+

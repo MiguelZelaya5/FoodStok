@@ -51,7 +51,7 @@ public class LlenarProducto extends AppCompatActivity {
 
         Cursor cursor = null;
         try {
-            cursor = db.rawQuery("SELECT foto, nombrearticulo, categoria, fechafabricacion, fechacaducidad, cantidad, idarticulo FROM articulos WHERE idarticulo = ? LIMIT 1", new String[]{idArticulo});
+            cursor = db.rawQuery("SELECT foto, nombrearticulo, fechafabricacion, fechacaducidad, cantidad, idarticulo FROM articulos WHERE idarticulo = ? LIMIT 1", new String[]{idArticulo});
 
             if (cursor != null && cursor.moveToFirst()) {
                 // Obtén los valores de cada columna en el cursor

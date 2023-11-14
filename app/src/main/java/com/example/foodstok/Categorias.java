@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
@@ -14,6 +15,7 @@ import android.speech.RecognizerIntent;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.ImageSpan;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -25,26 +27,42 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Categorias extends AppCompatActivity {
 
     private static final int RECOGNIZE_SPEECH_ACTIVITY = 1;
 
-    TextView vista;
+    private SharedPreferences sharedPreferences;
+    private DatabaseHelper databaseHelper;
+    private mostrarCategorias adapter;
+    TextView vista, nombreTextView, fabricacionTextView, cantidadTextView, caducidadTextView ;
+    private RecyclerView recyclerView;
     EditText grabar;
     DrawerLayout drawerLayout;
-    ImageView menu;
+    ImageView menu, imageView ;
     LinearLayout exit,about,categoria,Almacen,home;
+    String txtCategoria;
 
     private Button menuButton, btnBuscar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_categorias);
-
-        vista= findViewById(R.id.textViewNoArticulos);
+        sharedPreferences = getSharedPreferences("session", MODE_PRIVATE);
+        databaseHelper = new DatabaseHelper(this);
+        recyclerView = findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        imageView = findViewById(R.id.imageView);
+        nombreTextView = findViewById(R.id.nombreTextView);
+        fabricacionTextView = findViewById(R.id.fabricacionTextView);
+        caducidadTextView = findViewById(R.id.caducidadTextView);
+        cantidadTextView = findViewById(R.id.cantidadTextView);
+        vista= findViewById(R.id.tvNarticulo);
         drawerLayout = findViewById(R.id.drawerLayout);
         grabar = findViewById(R.id.editTextBuscar);
         menu=findViewById(R.id.menu);
@@ -55,12 +73,53 @@ public class Categorias extends AppCompatActivity {
         categoria=findViewById(R.id.categoria);
         grabar= (EditText) findViewById(R.id.editTextBuscar);
         btnBuscar = findViewById(R.id.btnBuscar);
+        ImageView imageView = findViewById(R.id.imageViewArticulo);
 
         btnBuscar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String categoriaBuscada = grabar.getText().toString();
-                buscarEnBaseDeDatos(categoriaBuscada);
+                SQLiteDatabase db = databaseHelper.getReadableDatabase();
+                int userId = getUserIdFromSharedPreferences();
+                txtCategoria = grabar.getText().toString();
+                String[] selectionArgs = new String[]{String.valueOf(userId), txtCategoria};
+
+                Cursor cursor = db.rawQuery("SELECT foto, nombrearticulo, categoria, fechafabricacion, fechacaducidad, cantidad,idarticulo FROM articulos WHERE id_usuario = ? AND categoria LIKE ?", selectionArgs);
+                // Comprueba si hay resultados en el cursor
+                if (cursor != null && cursor.moveToFirst()) {
+                    // Crea una lista para almacenar los datos obtenidos
+                    List<DataItem> dataItems = new ArrayList<>();
+
+                    do {
+                        // Obtén los valores de cada columna en el cursor
+                        byte[] foto = cursor.getBlob(0);
+                        String nombre = cursor.getString(1);
+                        String categoria = cursor.getString(2);
+                        String fechaFabricacion = cursor.getString(3);
+                        String fechaCaducidad = cursor.getString(4);
+                        int cantidad = cursor.getInt(5);
+                        String idarticulo=cursor.getString(6);
+
+                        // Crea un objeto DataItem con los datos obtenidos
+                        DataItem dataItem = new DataItem(foto, nombre, categoria, fechaFabricacion, fechaCaducidad, cantidad,idarticulo);
+
+                        // Agrega el objeto a la lista
+                        dataItems.add(dataItem);
+
+                    } while (cursor.moveToNext());
+
+                    // Cierra el cursor después de usarlo
+                    cursor.close();
+
+                    // Crea un adaptador y configúralo en el RecyclerView
+                    adapter = new mostrarCategorias(dataItems);
+                    recyclerView.setAdapter(adapter);
+                } else {
+                    // No se encontraron datos en la base de datos
+                    Toast.makeText(Categorias.this, "No se encontraron datos", Toast.LENGTH_SHORT).show();
+                }
+
+                // Cierra la conexión a la base de datos después de usarla
+                db.close();
             }
         });
 
@@ -89,7 +148,6 @@ public class Categorias extends AppCompatActivity {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
                     recreate();
                 }
-
             }
         });
         exit.setOnClickListener(new View.OnClickListener() {
@@ -101,7 +159,7 @@ public class Categorias extends AppCompatActivity {
         });
 
     }
-    private void buscarEnBaseDeDatos(String categoria) {
+    /*private void buscarEnBaseDeDatos(String categoria) {
         DatabaseHelper databaseHelper = new DatabaseHelper(this);
         SQLiteDatabase db = databaseHelper.getWritableDatabase();
 
@@ -109,6 +167,8 @@ public class Categorias extends AppCompatActivity {
         Cursor cursor = db.rawQuery(query, new String[]{categoria});
 
         StringBuilder resultado = new StringBuilder();
+
+        imageViewArticulo = findViewById(R.id.imageViewArticulo);
 
         if (cursor.moveToFirst()) {
             do {
@@ -126,14 +186,18 @@ public class Categorias extends AppCompatActivity {
                 resultado.append("Artículo: ").append(nombreArticulo).append("\n")
                         .append("Fecha de Fabricación: ").append(fechaFabricacion).append("\n")
                         .append("Fecha de Caducidad: ").append(fechacaducidad).append("\n")
-                        .append("Cantidad: ").append(cantidad).append("\n");
+                        .append("Cantidad: ").append(cantidad).append("\n\n");
 
-                // Muestra la imagen en el TextView usando ImageSpan
+                // Muestra la imagen en el ImageView
                 if (imagenBitmap != null) {
-                    ImageSpan imageSpan = new ImageSpan(this, imagenBitmap);
-                    SpannableString spannableString = new SpannableString(" ");
-                    spannableString.setSpan(imageSpan, 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                    resultado.append(spannableString).append("\n\n");
+                    // Crea un nuevo ImageView para cada imagen
+                    ImageView imageView = new ImageView(this);
+                    imageView.setImageBitmap(imagenBitmap);
+                    // Agrega el nuevo ImageView al diseño existente
+                    LinearLayout linearLayout = findViewById(R.id.linear); // Cambia al ID de tu diseño contenedor
+                    linearLayout.addView(imageView);
+
+                    imageView.setVisibility(View.VISIBLE); // Asegura que el ImageView sea visible solo si hay una imagen
                 }
             } while (cursor.moveToNext());
         } else {
@@ -141,13 +205,12 @@ public class Categorias extends AppCompatActivity {
         }
 
         // Muestra el resultado en el TextView
-        TextView vista = findViewById(R.id.textViewNoArticulos);  // Ajusta según el ID de tu TextView
+        TextView vista = findViewById(R.id.tvNarticulo);  // Ajusta según el ID de tu TextView
         vista.setText(resultado.toString());
 
         cursor.close();
         db.close();
-    }
-
+    }*/
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -167,6 +230,10 @@ public class Categorias extends AppCompatActivity {
             default:
                 break;
         }
+    }
+
+    private int getUserIdFromSharedPreferences() {
+        return sharedPreferences.getInt("idusuarios", -1);
     }
 
     public void onClickImgBtnMicrofono(View v) {
