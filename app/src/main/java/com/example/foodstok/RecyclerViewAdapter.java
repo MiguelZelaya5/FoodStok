@@ -69,9 +69,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 @Override
                 public void onClick(View v) {
                     Context context = v.getContext();
-                    Intent intent = new Intent(context, LlenarProducto.class);
-                    intent.putExtra("Id", dataItems.get(getAdapterPosition()).getidarticulo());
-                    context.startActivity(intent);
+                    int position = getBindingAdapterPosition(); // O getAbsoluteAdapterPosition()
+                    if (position != RecyclerView.NO_POSITION) {
+                        Intent intent = new Intent(context, LlenarProducto.class);
+                        intent.putExtra("Id", dataItems.get(position).getidarticulo());
+                        context.startActivity(intent);
+                    }
                 }
             });
         }
