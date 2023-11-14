@@ -159,12 +159,16 @@ public class Categorias extends AppCompatActivity {
                             .getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
                     String strSpeech2Text = speech.get(0);
                     grabar.setText(strSpeech2Text);
+
+                    // Llamar a la acción del botón después de reconocimiento de voz
+                    btnBuscar.performClick();
                 }
                 break;
             default:
                 break;
         }
     }
+
 
     public void onClickImgBtnMicrofono(View v) {
         Intent intentActionRecognizeSpeech = new Intent(

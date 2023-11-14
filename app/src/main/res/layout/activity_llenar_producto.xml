@@ -177,6 +177,7 @@
         <include
             layout="@layout/nav_drawer"/>
 
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.drawerlayout.widget.DrawerLayout>
