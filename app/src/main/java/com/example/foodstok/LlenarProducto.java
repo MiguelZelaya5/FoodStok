@@ -30,9 +30,9 @@ public class LlenarProducto extends AppCompatActivity {
         imageView = findViewById(R.id.ivProductImage);
         nombreTextView = findViewById(R.id.etProductName);
         categoriaTextView = findViewById(R.id.etCategory);
-        fabricacionTextView = findViewById(R.id.fabricacionTextView);
-        caducidadTextView = findViewById(R.id.caducidadTextView);
-        cantidadTextView = findViewById(R.id.cantidadTextView);
+        fabricacionTextView = findViewById(R.id.tvManufacturingDate);
+        caducidadTextView = findViewById(R.id.tvExpirationDate);
+        cantidadTextView = findViewById(R.id.etQuantity);
 
         // Obtén el Id del artículo de la intent
         String idArticulo = getIntent().getStringExtra("Id");
