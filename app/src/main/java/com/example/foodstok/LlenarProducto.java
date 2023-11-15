@@ -66,16 +66,17 @@ public class LlenarProducto extends AppCompatActivity {
 
         Cursor cursor = null;
         try {
-            cursor = db.rawQuery("SELECT foto, nombrearticulo, fechafabricacion, fechacaducidad, cantidad, idarticulo FROM articulos WHERE idarticulo = ? LIMIT 1", new String[]{idArticulo});
+            cursor = db.rawQuery("SELECT foto, nombrearticulo, fechafabricacion, fechacaducidad, cantidad ,categoria FROM articulos WHERE idarticulo = ? LIMIT 1", new String[]{idArticulo});
 
             if (cursor != null && cursor.moveToFirst()) {
                 // Obtén los valores de cada columna en el cursor
                 byte[] foto = cursor.getBlob(0);
                 String nombre = cursor.getString(1);
-                String categoria = cursor.getString(2);
-                String fechaFabricacion = cursor.getString(3);
-                String fechaCaducidad = cursor.getString(4);
-                int cantidad = cursor.getInt(5);
+                String categoria = cursor.getString(5);
+                String fechaFabricacion = cursor.getString(2);
+                String fechaCaducidad = cursor.getString(3);
+                int cantidad = cursor.getInt(4);
+
 
 
                 imageView.setImageBitmap(BitmapFactory.decodeByteArray(foto, 0, foto.length));

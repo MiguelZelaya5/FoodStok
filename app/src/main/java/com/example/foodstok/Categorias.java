@@ -30,6 +30,8 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,9 +45,10 @@ public class Categorias extends AppCompatActivity {
     TextView vista, nombreTextView, fabricacionTextView, cantidadTextView, caducidadTextView ;
     private RecyclerView recyclerView;
     EditText grabar;
+    FloatingActionButton fab;
     DrawerLayout drawerLayout;
     ImageView menu, imageView ;
-    LinearLayout exit,about,categoria,Almacen,home;
+    LinearLayout exit,about,categoria,Almacen,home,salir;
     String txtCategoria;
 
     private Button menuButton, btnBuscar;
@@ -58,6 +61,8 @@ public class Categorias extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         imageView = findViewById(R.id.imageView);
+        salir=findViewById(R.id.salir);
+        fab = findViewById(R.id.ItemAgregar);
         nombreTextView = findViewById(R.id.nombreTextView);
         fabricacionTextView = findViewById(R.id.fabricacionTextView);
         caducidadTextView = findViewById(R.id.caducidadTextView);
@@ -154,7 +159,23 @@ public class Categorias extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Toast.makeText(Categorias.this, "LogOut", Toast.LENGTH_SHORT).show();
+                logout();
 
+            }
+        });
+        salir.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                finishAffinity();
+
+            }
+        });
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                redirectActivity(Categorias.this, agregar_producto.class);
+                finish();
             }
         });
 
@@ -266,6 +287,30 @@ public class Categorias extends AppCompatActivity {
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         activity.startActivity(intent);
         activity.finish();
+    }
+    private void logout() {
+        // Realizar aquí las tareas de cierre de sesión, como borrar datos de sesión, etc.
+        setLoggedIn(false); // Establecer el estado de inicio de sesión como falso o cerrado
+        clearUserId(); // Borrar el ID del usuario guardado en SharedPreferences
+
+        // Redirigir a la pantalla de inicio de sesión (Login)
+        Intent intent = new Intent(Categorias.this, Sesion.class);
+        startActivity(intent);
+        finish(); // Cerrar la actividad actual (Inicio)
+    }
+    private boolean isUserLoggedIn() {
+        return sharedPreferences.getBoolean("isLoggedIn", false);
+    }
+
+    private void clearUserId() {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.remove("idusuarios");
+        editor.apply();
+    }
+    private void setLoggedIn(boolean isLoggedIn) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean("isLoggedIn", isLoggedIn);
+        editor.apply();
     }
 
     @Override

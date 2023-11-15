@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
     private SharedPreferences sharedPreferences;
     DrawerLayout drawerLayout;
     ImageView menu;
-    LinearLayout exit,about,categoria,Almacen,home,listCompras;
+    LinearLayout exit,about,categoria,Almacen,home,listCompras,cerrar,salir;
     private Button menuButton;
 
     @Override
@@ -81,6 +81,7 @@ public class MainActivity extends AppCompatActivity {
         home=findViewById(R.id.home);
         about=findViewById(R.id.about);
         exit=findViewById(R.id.exit);
+        salir=findViewById(R.id.salir);
         Almacen=findViewById(R.id.Almacen);
         categoria=findViewById(R.id.categoria);
 
@@ -164,6 +165,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Log.d("MainActivity", "Click on Almacen button");
                 redirectActivity(MainActivity.this, Categorias.class);
+                finish();
             }
         });
         exit.setOnClickListener(new View.OnClickListener() {
@@ -173,11 +175,18 @@ public class MainActivity extends AppCompatActivity {
                 logout();
             }
         });
+        salir.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finishAffinity();
+            }
+        });
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 redirectActivity(MainActivity.this, agregar_producto.class);
+                finish();
             }
         });
 

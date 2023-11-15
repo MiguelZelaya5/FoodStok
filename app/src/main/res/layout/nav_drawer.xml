@@ -117,21 +117,46 @@
         android:background="@color/blue"/>
 
     <LinearLayout
+        android:id="@+id/exit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/exit"
         android:layout_marginStart="12dp"
         android:layout_marginTop="12dp"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/blue"
-            android:text="Salir"
-            android:textSize="20sp"
             android:drawableLeft="@drawable/exit"
-            android:drawablePadding="8dp"/>
+            android:drawablePadding="8dp"
+            android:text="Cerrar Sesión"
+            android:textColor="@color/blue"
+            android:textSize="20sp" />
+
+
+
+
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/salir"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="12dp"
+        android:orientation="vertical">
+
+        <TextView
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/exit"
+            android:drawablePadding="8dp"
+            android:text="Salir"
+            android:textColor="@color/blue"
+            android:textSize="20sp" />
+
+
+
 
     </LinearLayout>
 

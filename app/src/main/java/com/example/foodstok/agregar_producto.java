@@ -48,7 +48,7 @@ public class agregar_producto extends AppCompatActivity {
     FloatingActionButton fab;
     DrawerLayout drawerLayout;
     ImageView menu;
-    LinearLayout exit,about,categoria,Almacen,home,addP;
+    LinearLayout exit,about,categoria,Almacen,home,addP,salir;
     private EditText etProductName, etQuantity;
     private TextView tvManufacturingDate, tvExpirationDate;
     private Spinner spincategoria;
@@ -81,6 +81,7 @@ public class agregar_producto extends AppCompatActivity {
         tvExpirationDate = findViewById(R.id.tvExpirationDate);
         imageView = findViewById(R.id.ivProductImage);
         btnDecrease = findViewById(R.id.btnDecrease);
+        salir=findViewById(R.id.salir);
         btnIncrease = findViewById(R.id.btnIncrease);
         btnAddProduct = findViewById(R.id.btnAddProduct);
         etQuantity.setText("0");
@@ -146,6 +147,13 @@ public class agregar_producto extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 redirectActivity(agregar_producto.this, MainActivity.class);
+                finish();
+            }
+        });
+        salir.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finishAffinity();
             }
         });
 
@@ -154,6 +162,7 @@ public class agregar_producto extends AppCompatActivity {
             public void onClick(View v) {
                 Log.d("MainActivity", "Click on Almacen button");
                 redirectActivity(agregar_producto.this, Almacen.class);
+                finish();
             }
         });
 
@@ -161,6 +170,7 @@ public class agregar_producto extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Toast.makeText(agregar_producto.this, "LogOut", Toast.LENGTH_SHORT).show();
+                logout();
             }
         });
 
@@ -213,9 +223,6 @@ public class agregar_producto extends AppCompatActivity {
         integrator.setCameraId(0);  // Cámara trasera por defecto
         integrator.initiateScan();
     }
-
-
-
     private void addProduct() {
         this.categoriaspiner();
         String nombreproducto=etProductName.getText().toString();
@@ -237,13 +244,16 @@ public class agregar_producto extends AppCompatActivity {
         values.put("id_usuario", userId);
         long resultado = database.insert("articulos", null, values);
         if (resultado != -1) {
-            Toast.makeText(this, "Categoría agregada correctamente", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Producto agregado correctamente", Toast.LENGTH_SHORT).show();
         } else {
-            Toast.makeText(this, "Error al agregar la categoría", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Error al agregar el producto", Toast.LENGTH_SHORT).show();
         }
 
         database.close();
     }
+
+
+
     public void categoriaspiner(){
         String escala=spincategoria.getSelectedItem().toString();
         if (escala.equals("Carnes")) {
@@ -392,6 +402,30 @@ public class agregar_producto extends AppCompatActivity {
     }
     private int getUserIdFromSharedPreferences() {
         return sharedPreferences.getInt("idusuarios", -1);
+    }
+    private void logout() {
+        // Realizar aquí las tareas de cierre de sesión, como borrar datos de sesión, etc.
+        setLoggedIn(false); // Establecer el estado de inicio de sesión como falso o cerrado
+        clearUserId(); // Borrar el ID del usuario guardado en SharedPreferences
+
+        // Redirigir a la pantalla de inicio de sesión (Login)
+        Intent intent = new Intent(agregar_producto.this, Sesion.class);
+        startActivity(intent);
+        finish(); // Cerrar la actividad actual (Inicio)
+    }
+    private boolean isUserLoggedIn() {
+        return sharedPreferences.getBoolean("isLoggedIn", false);
+    }
+
+    private void clearUserId() {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.remove("idusuarios");
+        editor.apply();
+    }
+    private void setLoggedIn(boolean isLoggedIn) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean("isLoggedIn", isLoggedIn);
+        editor.apply();
     }
 
 }
