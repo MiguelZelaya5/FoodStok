@@ -230,8 +230,15 @@ public class agregar_producto extends AppCompatActivity {
         integrator.initiateScan();
     }
     private void addProduct() {
+
         this.categoriaspiner();
         String nombreproducto=etProductName.getText().toString();
+        if (nombreproducto.trim().isEmpty()) {
+            // Mostrar un mensaje de error porque el campo está vacío
+            Toast.makeText(this, "Por favor, introduce un nombre de producto válido", Toast.LENGTH_SHORT).show();
+            return; // Salir del método para evitar agregar un producto vacío
+        }
+
         int cantidad = Integer.parseInt(etQuantity.getText().toString());
         String fechafabricacion=tvManufacturingDate.getText().toString();
         String fechacaducidad=tvExpirationDate.getText().toString();
