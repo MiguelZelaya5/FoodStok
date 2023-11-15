@@ -2,19 +2,24 @@ package com.example.foodstok;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.database.sqlite.SQLiteDatabase;
 import android.widget.Toast;
@@ -25,6 +30,9 @@ public class LlenarProducto extends AppCompatActivity {
     private Button btnDelete;
     private DatabaseHelper databaseHelper;
     private SharedPreferences sharedPreferences;
+    DrawerLayout drawerLayout;
+    ImageView menu;
+    LinearLayout exit,about,categoria,Almacen,home;
 
     private TextView nombreTextView, categoriaTextView, fabricacionTextView, caducidadTextView, cantidadTextView;
 
@@ -42,6 +50,13 @@ public class LlenarProducto extends AppCompatActivity {
         fabricacionTextView = findViewById(R.id.tvManufacturingDate);
         caducidadTextView = findViewById(R.id.tvExpirationDate);
         cantidadTextView = findViewById(R.id.etQuantity);
+        drawerLayout = findViewById(R.id.drawerLayout);
+        menu=findViewById(R.id.menu);
+        home=findViewById(R.id.home);
+        about=findViewById(R.id.about);
+        exit=findViewById(R.id.exit);
+        Almacen=findViewById(R.id.Almacen);
+        categoria=findViewById(R.id.categoria);
 
         // Obtén el Id del artículo de la intent
         String idArticulo = getIntent().getStringExtra("Id");
@@ -107,8 +122,64 @@ public class LlenarProducto extends AppCompatActivity {
             }
         });
 
+        menu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openDrawer(drawerLayout);
+            }
+        });
+        home.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                redirectActivity(LlenarProducto.this, MainActivity.class);
+            }
+        });
+
+        Almacen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+                    redirectActivity(LlenarProducto.this, Almacen.class);
+                }
+
+            }
+        });
+        categoria.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                redirectActivity(LlenarProducto.this, Categorias.class);
+            }
+        });
+        exit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(LlenarProducto.this, "LogOut", Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
 
+    public static void openDrawer(DrawerLayout drawerLayout){
+        drawerLayout.openDrawer(GravityCompat.START);
+    }
+    public static void closeDrawer(DrawerLayout drawerLayout){
+        if(drawerLayout.isDrawerOpen(GravityCompat.START)){
+            drawerLayout.closeDrawer(GravityCompat.START);
+        }
+    }
+
+    public static void redirectActivity(Activity activity, Class secondActivity) {
+        Intent intent = new Intent(activity, secondActivity);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        activity.startActivity(intent);
+        activity.finish();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        closeDrawer(drawerLayout);
+    }
     public void eliminar() {
         String idArticulo = getIntent().getStringExtra("Id");
         DatabaseHelper databaseHelper = new DatabaseHelper(this);
