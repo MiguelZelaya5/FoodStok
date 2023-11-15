@@ -42,7 +42,7 @@
             android:name=".LlenarProducto"
             android:exported="false" />
         <activity
-            android:name=".Sesion"
+            android:name=".MainActivity"
             android:exported="false" />
         <activity
             android:name=".Registro"
@@ -60,7 +60,7 @@
             android:name=".agregar_producto"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".Sesion"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
