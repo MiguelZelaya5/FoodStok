@@ -1,6 +1,8 @@
 package com.example.foodstok;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.app.Activity;
 import android.content.ContentValues;
@@ -8,12 +10,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.SparseBooleanArray;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -21,21 +26,32 @@ import java.util.ArrayList;
 
 public class lista_agregar extends AppCompatActivity {
     private EditText editTextProducto;
+    private SharedPreferences sharedPreferences;
 
+    DrawerLayout drawerLayout;
+    ImageView menu;
+    LinearLayout exit,about,categoria,Almacen,home,salir;
     private Button btn_lista;
     private EditText editTextCantidad; // Nuevo EditText para la cantidad
     private ListView listViewProductos;
     private ArrayAdapter<String> adapter;
     private ArrayList<String> productos;
     private ArrayList<Integer> cantidades; // Nuevo ArrayList para almacenar las cantidades
-    private SharedPreferences sharedPreferences;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lista_agregar);
 
+        sharedPreferences = getSharedPreferences("session", MODE_PRIVATE);
+        drawerLayout = findViewById(R.id.drawerLayout);
+        menu=findViewById(R.id.menu);
+        home=findViewById(R.id.home);
+        about=findViewById(R.id.about);
+        exit=findViewById(R.id.exit);
+        Almacen=findViewById(R.id.Almacen);
+        categoria=findViewById(R.id.categoria);
+        salir=findViewById(R.id.salir);
         btn_lista = findViewById(R.id.btn_lista);
         editTextProducto = findViewById(R.id.editTextProduct);
         editTextCantidad = findViewById(R.id.editTextCantidad); // Enlazar con el EditText en el layout
@@ -47,18 +63,69 @@ public class lista_agregar extends AppCompatActivity {
         listViewProductos.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         listViewProductos.setAdapter(adapter);
 
+        int userId = getUserIdFromSharedPreferences();
+        String[] selectionArgs = new String[]{String.valueOf(userId)};
+
 
         sharedPreferences = (lista_agregar.this).getSharedPreferences("session", Context.MODE_PRIVATE);
 
         btn_lista.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                redirectActivity(lista_agregar.this, lista.class);
+                redirectActivity(lista_agregar.this, lista_agregar.class);
             }
         });
+
+        menu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openDrawer(drawerLayout);
+            }
+        });
+        home.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                redirectActivity(lista_agregar.this, MainActivity.class);
+            }
+        });
+
+        Almacen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                redirectActivity(lista_agregar.this, Almacen.class);
+
+            }
+        });
+        categoria.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                redirectActivity(lista_agregar.this, Categorias.class);
+            }
+        });
+
+        about.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+                    recreate();
+                }
+            }
+        });
+        exit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(lista_agregar.this, "LogOut", Toast.LENGTH_SHORT).show();
+                logout();
+            }
+        });
+        salir.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finishAffinity();
+            }
+        });
+
     }
-
-
 
     public void agregarProducto(View view) {
         String nombreProducto = editTextProducto.getText().toString();
@@ -91,6 +158,7 @@ public class lista_agregar extends AppCompatActivity {
         listViewProductos.clearChoices();
         adapter.notifyDataSetChanged();
     }
+
 
     public void guardarLista(View view) {
         StringBuilder listaGuardada = new StringBuilder();
@@ -134,6 +202,50 @@ public class lista_agregar extends AppCompatActivity {
         }
 
         database.close();
+    }
+
+    public static void openDrawer(DrawerLayout drawerLayout){
+        drawerLayout.openDrawer(GravityCompat.START);
+    }
+    public static void closeDrawer(DrawerLayout drawerLayout){
+        if(drawerLayout.isDrawerOpen(GravityCompat.START)){
+            drawerLayout.closeDrawer(GravityCompat.START);
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        closeDrawer(drawerLayout);
+    }
+
+    private void logout() {
+        // Realizar aquí las tareas de cierre de sesión, como borrar datos de sesión, etc.
+        setLoggedIn(false); // Establecer el estado de inicio de sesión como falso o cerrado
+        clearUserId(); // Borrar el ID del usuario guardado en SharedPreferences
+
+        // Redirigir a la pantalla de inicio de sesión (Login)
+        Intent intent = new Intent(lista_agregar.this, Sesion.class);
+        startActivity(intent);
+        finish(); // Cerrar la actividad actual (Inicio)
+    }
+    private void setLoggedIn(boolean isLoggedIn) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean("isLoggedIn", isLoggedIn);
+        editor.apply();
+    }
+
+    private boolean isUserLoggedIn() {
+        return sharedPreferences.getBoolean("isLoggedIn", false);
+    }
+
+    private void clearUserId() {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.remove("idusuarios");
+        editor.apply();
+    }
+    private int getUserIdFromSharedPreferences() {
+        return sharedPreferences.getInt("idusuarios", -1);
     }
 
 

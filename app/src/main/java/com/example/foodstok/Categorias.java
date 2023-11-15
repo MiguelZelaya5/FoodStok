@@ -158,7 +158,7 @@ public class Categorias extends AppCompatActivity {
         about.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                redirectActivity(Categorias.this, lista.class);
+                redirectActivity(Categorias.this, lista_agregar.class);
             }
         });
         exit.setOnClickListener(new View.OnClickListener() {

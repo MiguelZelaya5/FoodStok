@@ -39,6 +39,9 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".lista_agregar"
+            android:exported="false"/>
+        <activity
             android:name=".LlenarProducto"
             android:exported="false" />
         <activity

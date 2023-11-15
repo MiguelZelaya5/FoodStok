@@ -157,7 +157,7 @@ public class LlenarProducto extends AppCompatActivity {
         about.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                redirectActivity(LlenarProducto.this, lista.class);
+                redirectActivity(LlenarProducto.this, lista_agregar.class);
             }
         });
         exit.setOnClickListener(new View.OnClickListener() {

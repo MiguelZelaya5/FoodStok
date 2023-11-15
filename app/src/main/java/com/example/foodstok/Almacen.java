@@ -71,7 +71,7 @@ public class Almacen extends AppCompatActivity {
         about.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                redirectActivity(Almacen.this, lista.class);
+                redirectActivity(Almacen.this, lista_agregar.class);
             }
         });
         exit.setOnClickListener(new View.OnClickListener() {

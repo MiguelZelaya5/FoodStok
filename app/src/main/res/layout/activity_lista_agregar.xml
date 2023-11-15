@@ -1,85 +1,113 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:id="@+id/drawerLayout"
+    tools:context=".lista_agregar">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <EditText
-            android:id="@+id/editTextProduct"
+        <include
+            layout="@layout/toolbar"/>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:hint="Nombre del producto" />
+            android:orientation="horizontal">
 
-        <EditText
-            android:id="@+id/editTextCantidad"
+            <EditText
+                android:id="@+id/editTextProduct"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:hint="Nombre del producto" />
+
+            <EditText
+                android:id="@+id/editTextCantidad"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_weight="3.5"
+                android:hint="Cantidad"
+                android:inputType="number"
+                android:textAlignment="center" />
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="3.5"
-            android:hint="Cantidad"
-            android:inputType="number"
-            android:textAlignment="center" />
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnAgrega"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="agregarProducto"
+                android:text="Agregar Producto" />
+
+            <Button
+                android:id="@+id/btnGuardar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="60dp"
+                android:layout_weight="0.5"
+                android:backgroundTint="@color/aquaclaro"
+                android:onClick="guardarLista"
+                android:text="Guardar Lista" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnEliminar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="eliminarProductos"
+                android:text="Eliminar productos" />
+
+            <Button
+                android:id="@+id/btn_lista"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="60dp"
+                android:layout_weight="0.5"
+                android:backgroundTint="@color/aqua"
+                android:text="Tus listas" />
+
+
+        </LinearLayout>
+
+
+        <ListView
+            android:id="@+id/listViewProducto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:choiceMode="multipleChoice" />
+
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="300dp"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:layout_gravity = "start">
 
-        <Button
-            android:id="@+id/btnAgrega"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="agregarProducto"
-            android:text="Agregar Producto" />
-
-        <Button
-            android:id="@+id/btnGuardar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="60dp"
-            android:layout_weight="0.5"
-            android:backgroundTint="@color/aquaclaro"
-            android:onClick="guardarLista"
-            android:text="Guardar Lista" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/btnEliminar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="eliminarProductos"
-            android:text="Eliminar productos" />
-
-        <Button
-            android:id="@+id/btn_lista"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="60dp"
-            android:layout_weight="0.5"
-            android:backgroundTint="@color/aqua"
-            android:text="Tus listas" />
+        <include
+            layout="@layout/nav_drawer"/>
 
 
-    </LinearLayout>
-
-
-    <ListView
-        android:id="@+id/listViewProducto"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:choiceMode="multipleChoice" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 
-</LinearLayout>
+
+
+</androidx.drawerlayout.widget.DrawerLayout>
