@@ -155,6 +155,12 @@ public class Categorias extends AppCompatActivity {
                 }
             }
         });
+        about.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                redirectActivity(Categorias.this, lista.class);
+            }
+        });
         exit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

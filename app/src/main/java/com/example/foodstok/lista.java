@@ -1,15 +1,23 @@
 package com.example.foodstok;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,6 +30,9 @@ public class lista extends AppCompatActivity {
     private DatabaseHelper databaseHelper;
     private SharedPreferences sharedPreferences;
 
+    DrawerLayout drawerLayout;
+    ImageView menu;
+    LinearLayout exit,about,categoria,Almacen,home,salir;
     private TextView textViewnombre, textViewcantidad;
     private RecyclerView recyclerView;
     private RecyclerViewAdapter adapter;
@@ -34,6 +45,67 @@ public class lista extends AppCompatActivity {
 
         sharedPreferences = getSharedPreferences("session", MODE_PRIVATE);
         databaseHelper = new DatabaseHelper(this);
+        drawerLayout = findViewById(R.id.drawerLayout);
+        menu=findViewById(R.id.menu);
+        home=findViewById(R.id.home);
+        about=findViewById(R.id.about);
+        exit=findViewById(R.id.exit);
+        Almacen=findViewById(R.id.Almacen);
+        categoria=findViewById(R.id.categoria);
+        salir=findViewById(R.id.salir);
+
+        int userId = getUserIdFromSharedPreferences();
+        String[] selectionArgs = new String[]{String.valueOf(userId)};
+
+        menu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openDrawer(drawerLayout);
+            }
+        });
+        home.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                redirectActivity(lista.this, MainActivity.class);
+            }
+        });
+
+        Almacen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                redirectActivity(lista.this, Almacen.class);
+
+            }
+        });
+        categoria.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                redirectActivity(lista.this, Categorias.class);
+            }
+        });
+
+        about.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+                    recreate();
+                }
+            }
+        });
+        exit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(lista.this, "LogOut", Toast.LENGTH_SHORT).show();
+                logout();
+            }
+        });
+        salir.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finishAffinity();
+            }
+        });
+
 
         // Obtén referencias a los elementos de la vista en la actividad
         textViewnombre = findViewById(R.id.textViewnombre);
@@ -74,5 +146,55 @@ public class lista extends AppCompatActivity {
             db.close();
         }
 
+    }
+    public static void openDrawer(DrawerLayout drawerLayout){
+        drawerLayout.openDrawer(GravityCompat.START);
+    }
+    public static void closeDrawer(DrawerLayout drawerLayout){
+        if(drawerLayout.isDrawerOpen(GravityCompat.START)){
+            drawerLayout.closeDrawer(GravityCompat.START);
+        }
+    }
+
+    public static void redirectActivity(Activity activity, Class secondActivity) {
+        Intent intent = new Intent(activity, secondActivity);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        activity.startActivity(intent);
+        activity.finish();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        closeDrawer(drawerLayout);
+    }
+
+    private void logout() {
+        // Realizar aquí las tareas de cierre de sesión, como borrar datos de sesión, etc.
+        setLoggedIn(false); // Establecer el estado de inicio de sesión como falso o cerrado
+        clearUserId(); // Borrar el ID del usuario guardado en SharedPreferences
+
+        // Redirigir a la pantalla de inicio de sesión (Login)
+        Intent intent = new Intent(lista.this, Sesion.class);
+        startActivity(intent);
+        finish(); // Cerrar la actividad actual (Inicio)
+    }
+    private void setLoggedIn(boolean isLoggedIn) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean("isLoggedIn", isLoggedIn);
+        editor.apply();
+    }
+
+    private boolean isUserLoggedIn() {
+        return sharedPreferences.getBoolean("isLoggedIn", false);
+    }
+
+    private void clearUserId() {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.remove("idusuarios");
+        editor.apply();
+    }
+    private int getUserIdFromSharedPreferences() {
+        return sharedPreferences.getInt("idusuarios", -1);
     }
 }

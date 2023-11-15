@@ -182,6 +182,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        about.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                redirectActivity(MainActivity.this, lista.class);
+            }
+        });
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

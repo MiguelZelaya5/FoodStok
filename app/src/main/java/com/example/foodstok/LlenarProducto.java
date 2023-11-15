@@ -43,6 +43,9 @@ public class LlenarProducto extends AppCompatActivity {
         sharedPreferences = getSharedPreferences("session", MODE_PRIVATE);
         databaseHelper = new DatabaseHelper(this);
         btnDelete=findViewById(R.id.btnEliminar);
+
+        int userId = getUserIdFromSharedPreferences();
+        String[] selectionArgs = new String[]{String.valueOf(userId)};
         // Obtén referencias a los elementos de la vista en la actividad LlenarProducto
         imageView = findViewById(R.id.ivProductImage);
         nombreTextView = findViewById(R.id.etProductName);
@@ -151,6 +154,12 @@ public class LlenarProducto extends AppCompatActivity {
                 redirectActivity(LlenarProducto.this, Categorias.class);
             }
         });
+        about.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                redirectActivity(LlenarProducto.this, lista.class);
+            }
+        });
         exit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -200,7 +209,33 @@ public class LlenarProducto extends AppCompatActivity {
         database.close();
     }
 
+    private void logout() {
+        // Realizar aquí las tareas de cierre de sesión, como borrar datos de sesión, etc.
+        setLoggedIn(false); // Establecer el estado de inicio de sesión como falso o cerrado
+        clearUserId(); // Borrar el ID del usuario guardado en SharedPreferences
 
+        // Redirigir a la pantalla de inicio de sesión (Login)
+        Intent intent = new Intent(LlenarProducto.this, Sesion.class);
+        startActivity(intent);
+        finish(); // Cerrar la actividad actual (Inicio)
+    }
+    private void setLoggedIn(boolean isLoggedIn) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean("isLoggedIn", isLoggedIn);
+        editor.apply();
+    }
 
+    private boolean isUserLoggedIn() {
+        return sharedPreferences.getBoolean("isLoggedIn", false);
+    }
+
+    private void clearUserId() {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.remove("idusuarios");
+        editor.apply();
+    }
+    private int getUserIdFromSharedPreferences() {
+        return sharedPreferences.getInt("idusuarios", -1);
+    }
 
 }

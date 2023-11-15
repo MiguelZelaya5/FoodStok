@@ -165,6 +165,12 @@ public class agregar_producto extends AppCompatActivity {
                 finish();
             }
         });
+        about.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                redirectActivity(agregar_producto.this, lista.class);
+            }
+        });
 
         exit.setOnClickListener(new View.OnClickListener() {
             @Override
