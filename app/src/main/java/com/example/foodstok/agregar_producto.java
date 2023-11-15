@@ -180,7 +180,6 @@ public class agregar_producto extends AppCompatActivity {
             }
         });
 
-
     }
 
     private void showDatePicker(final TextView textView) {
@@ -263,6 +262,11 @@ public class agregar_producto extends AppCompatActivity {
         long resultado = database.insert("articulos", null, values);
         if (resultado != -1) {
             Toast.makeText(this, "Producto agregado correctamente", Toast.LENGTH_SHORT).show();
+            etProductName.setText("");
+            etQuantity.setText("0");
+            tvManufacturingDate.setText("");
+            tvExpirationDate.setText("");
+            imageView.setImageResource(R.drawable.foto);
         } else {
             Toast.makeText(this, "Error al agregar el producto", Toast.LENGTH_SHORT).show();
         }
@@ -299,6 +303,8 @@ public class agregar_producto extends AppCompatActivity {
             categoriatexto="Bebidas";
         }else if(escala.equals("Harinas")){
             categoriatexto="Harinas";
+        } else if (escala.equals("Otros")) {
+            categoriatexto="Otros";
         }
     }
     private void showImageSelectionOptions() {
