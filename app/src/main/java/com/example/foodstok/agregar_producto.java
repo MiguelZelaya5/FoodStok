@@ -279,10 +279,18 @@ public class agregar_producto extends AppCompatActivity {
 
         }else if(escala.equals("Aderezo")){
             categoriatexto="Aderezo";
+        }else if(escala.equals("Salsas")){
+        categoriatexto="Aderezo";
+        }else if(escala.equals("Productos enlatados")){
+            categoriatexto="Productos enlatados";
+        }else if(escala.equals("Bebidas")){
+            categoriatexto="Bebidas";
+        }else if(escala.equals("Harinas")){
+            categoriatexto="Harinas";
         }
     }
     private void showImageSelectionOptions() {
-        String[] options = {"Tomar fotografía", "Seleccionar de la galería"};
+        String[] options = {"Tomar fotografía"};
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Seleccionar imagen");

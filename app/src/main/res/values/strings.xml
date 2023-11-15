@@ -37,6 +37,12 @@
         <item>Vegetales</item>
         <item>Fruta</item>
         <item>Aderezo</item>
+        <item>Salsas</item>
+        <item>Productos enlatados</item>
+        <item>Bebidas</item>
+        <item>Harinas</item>
+
+
 
     </string-array>
 </resources>
