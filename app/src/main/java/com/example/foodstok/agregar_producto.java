@@ -240,6 +240,11 @@ public class agregar_producto extends AppCompatActivity {
         }
 
         int cantidad = Integer.parseInt(etQuantity.getText().toString());
+        if (cantidad==0) {
+            // Mostrar un mensaje de error porque el campo está vacío
+            Toast.makeText(this, "Por favor, introduce la cantidad", Toast.LENGTH_SHORT).show();
+            return;
+        }
         String fechafabricacion=tvManufacturingDate.getText().toString();
         String fechacaducidad=tvExpirationDate.getText().toString();
         String categoria=categoriatexto;
