@@ -82,6 +82,13 @@
     <string name="otros1">Otros</string>
     <string name="tomar_fotograf_a">Tomar fotografía</string>
     <string name="seleccionar_imagen">Seleccionar imagen</string>
+    <string name="agregar_y_mostrar_recordatorio">Agregar y Mostrar Recordatorio</string>
+    <string name="nombre_del_productoo">Nombre del producto</string>
+    <string name="cantidaddd">Cantidad</string>
+    <string name="eliminar_productosss">Eliminar productos</string>
+    <string name="agregar_productooo">Agregar Producto</string>
+    <string name="tus_listass">Tus listas</string>
+    <string name="guardar_lista">Guardar Lista</string>
     <string-array name="escala">
         <item>Carnes</item>
         <item>Lacteos</item>

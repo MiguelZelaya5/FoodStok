@@ -57,7 +57,6 @@ public class recordatorio extends AppCompatActivity {
         calendar = Calendar.getInstance();
         handler = new Handler();
 
-        // Inicializar el Runnable para mostrar el recordatorio
         showReminderRunnable = new Runnable() {
             @Override
             public void run() {
@@ -89,7 +88,6 @@ public class recordatorio extends AppCompatActivity {
             }
         });
 
-        // Configurar el click listener del botón "Guardar preferencias"
         Button buttonGuardarPreferencias = findViewById(R.id.buttonGuardarPreferencias);
         buttonGuardarPreferencias.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,12 +96,11 @@ public class recordatorio extends AppCompatActivity {
             }
         });
 
-        // Obtener los valores de inicio de mes y plazo de días desde SharedPreferences
         getPreferencesFromSharedPreferences();
     }
 
     private void showDatePickerDialog() {
-        // Crear el DatePickerDialog con la fecha actual como fecha inicial
+
         DatePickerDialog datePickerDialog = new DatePickerDialog(
                 this,
                 dateSetListener,
@@ -112,19 +109,17 @@ public class recordatorio extends AppCompatActivity {
                 calendar.get(Calendar.DAY_OF_MONTH)
         );
 
-        // Mostrar el DatePickerDialog
         datePickerDialog.show();
     }
 
     private DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
         @Override
         public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-            // Actualizar la fecha seleccionada en el objeto Calendar
+
             calendar.set(Calendar.YEAR, year);
             calendar.set(Calendar.MONTH, monthOfYear);
             calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
 
-            // Formatear la fecha seleccionada en el formato deseado
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
             editTextStartDate.setText(dateFormat.format(calendar.getTime()));
         }
@@ -133,13 +128,11 @@ public class recordatorio extends AppCompatActivity {
     private void savePreferences() {
 
         int plazoRegistros = -1;
-        // Verificar si el EditText tiene un valor válido
         String editTextValue = numero.getText().toString().trim();
         if (!editTextValue.isEmpty()) {
             try {
                 plazoRegistros = Integer.parseInt(editTextValue);
             } catch (NumberFormatException e) {
-                // Manejar la excepción si el valor no es un número válido
                 Toast.makeText(this, "Ingrese un valor válido en el campo de días", Toast.LENGTH_SHORT).show();
                 return;
             }
@@ -153,16 +146,13 @@ public class recordatorio extends AppCompatActivity {
 
         String diaInicioMes = editTextStartDate.getText().toString();
 
-        // Validar si se seleccionaron valores válidos
         if (plazoRegistros != -1 && !diaInicioMes.isEmpty()) {
-            // Obtener la fecha actual
             Calendar currentDate = Calendar.getInstance();
             currentDate.set(Calendar.HOUR_OF_DAY, 0);
             currentDate.set(Calendar.MINUTE, 0);
             currentDate.set(Calendar.SECOND, 0);
             currentDate.set(Calendar.MILLISECOND, 0);
 
-            // Obtener la fecha seleccionada
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
             Date selectedDate;
             try {
@@ -171,19 +161,14 @@ public class recordatorio extends AppCompatActivity {
                 selectedDate = null;
             }
 
-            // Comparar las fechas
             if (selectedDate != null && !selectedDate.before(currentDate.getTime())) {
-                // Guardar los valores en SharedPreferences en lugar de la base de datos
                 savePreferencesInSharedPreferences(plazoRegistros, diaInicioMes);
                 Toast.makeText(this, "Preferencias guardadas correctamente", Toast.LENGTH_SHORT).show();
-
-                // Actualizar los TextView con los valores seleccionados
                 textViewInicioMes.setText("Día de inicio: " + diaInicioMes);
                 textViewPlazoDias.setText("Plazo de días: " + plazoRegistros);
                 textViewInicioMes.setVisibility(View.VISIBLE);
                 textViewPlazoDias.setVisibility(View.VISIBLE);
 
-                // Programar la tarea para mostrar el recordatorio después del plazo de días
                 if (plazoRegistros > 0) {
                     scheduleReminder(plazoRegistros, selectedDate);
                 }
@@ -200,23 +185,18 @@ public class recordatorio extends AppCompatActivity {
 
     private void scheduleReminder(int plazoRegistros, Date selectedDate) {
         if (selectedDate != null) {
-            // Crear un objeto Calendar con la fecha seleccionada
             Calendar startDate = Calendar.getInstance();
             startDate.setTime(selectedDate);
 
-            // Sumar el plazo de días a la fecha de inicio
             startDate.add(Calendar.DAY_OF_MONTH, plazoRegistros);
 
-            // Calcular la diferencia en milisegundos entre la fecha actual y la fecha calculada
             long timeDifference = startDate.getTimeInMillis() - System.currentTimeMillis();
 
-            // Programar la tarea para mostrar el recordatorio después de la diferencia de tiempo
             handler.postDelayed(showReminderRunnable, timeDifference);
         }
     }
 
     private void savePreferencesInSharedPreferences(int plazoRegistros, String diaInicioMes) {
-        // Guardar valores en SharedPreferences
         SharedPreferences sharedPreferences = getSharedPreferences("recordatorio_prefs", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putInt("plazo_registros", plazoRegistros);
@@ -225,19 +205,16 @@ public class recordatorio extends AppCompatActivity {
     }
 
     private void getPreferencesFromSharedPreferences() {
-        // Obtener valores desde SharedPreferences
         SharedPreferences sharedPreferences = getSharedPreferences("recordatorio_prefs", Context.MODE_PRIVATE);
         int plazoRegistros = sharedPreferences.getInt("plazo_registros", -1);
         String diaInicioMes = sharedPreferences.getString("dia_inicio_mes", "");
 
         if (plazoRegistros != -1 && !diaInicioMes.isEmpty()) {
-            // Actualizar los TextView con los valores seleccionados
             textViewInicioMes.setText("Día de inicio: " + diaInicioMes);
             textViewPlazoDias.setText("Plazo de días: " + plazoRegistros);
             textViewInicioMes.setVisibility(View.VISIBLE);
             textViewPlazoDias.setVisibility(View.VISIBLE);
 
-            // Programar la tarea para mostrar el recordatorio después del plazo de días
             if (plazoRegistros > 0) {
                 scheduleReminder(plazoRegistros, getDateFromString(diaInicioMes));
             }
@@ -268,7 +245,6 @@ public class recordatorio extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        // Eliminar cualquier callback pendiente para evitar fugas de memoria
         handler.removeCallbacks(showReminderRunnable);
         super.onDestroy();
     }
