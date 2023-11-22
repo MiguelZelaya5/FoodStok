@@ -42,6 +42,11 @@
             android:name=".lista_agregar"
             android:exported="false"/>
         <activity
+            android:name=".FiltroAlmacen"
+            android:exported="false"/>
+
+
+        <activity
             android:name=".LlenarProducto"
             android:exported="false" />
         <activity

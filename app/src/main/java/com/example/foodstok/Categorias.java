@@ -103,7 +103,6 @@ public class Categorias extends AppCompatActivity {
                         String fechaCaducidad = cursor.getString(4);
                         int cantidad = cursor.getInt(5);
                         String idarticulo=cursor.getString(6);
-
                         // Crea un objeto DataItem con los datos obtenidos
                         DataItem dataItem = new DataItem(foto, nombre, categoria, fechaFabricacion, fechaCaducidad, cantidad,idarticulo);
 

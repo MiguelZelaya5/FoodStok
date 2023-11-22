@@ -108,14 +108,30 @@ public class LlenarProducto extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(LlenarProducto.this);
-                builder.setMessage("¿Desea eliminar este contacto?")
+                builder.setMessage("¿Desea eliminar este Articulo?")
                         .setPositiveButton("SI", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 eliminar();
-                                Intent intent = new Intent(LlenarProducto.this, MainActivity.class);
-                                startActivity(intent);
-                                finish();
+                                AlertDialog.Builder builder = new AlertDialog.Builder(LlenarProducto.this);
+                                builder.setMessage("¿Redirir a: ?")
+                                        .setPositiveButton("Menu Principal", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialogInterface, int i) {
+                                                Intent intent = new Intent(LlenarProducto.this, MainActivity.class);
+                                                startActivity(intent);
+                                                finish();
+
+                                            }
+                                        }).setNegativeButton("Estanteria", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                Intent intent = new Intent(LlenarProducto.this, Almacen.class);
+                                                startActivity(intent);
+                                                finish();
+                                            }
+                                        }).show();
+
                             }
                         }).setNegativeButton("NO", new DialogInterface.OnClickListener() {
                             @Override

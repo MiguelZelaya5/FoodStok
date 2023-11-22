@@ -16,38 +16,22 @@
     <include
         layout="@layout/toolbar"/>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView"
-            android:layout_width="403dp"
-            android:layout_height="402dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="80dp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnBuscar" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="403dp"
+                android:layout_height="402dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvCaducidad" />
 
-        <Button
-            android:id="@+id/btnBuscar2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="Buscar"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.503"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editTextBuscar" />
-
-        <TextView
+            <TextView
                 android:id="@+id/tvCaducidad"
-                android:layout_width="0dp"
+                android:layout_width="411dp"
                 android:layout_height="wrap_content"
                 android:padding="16dp"
                 android:paddingBottom="10dp"
@@ -58,47 +42,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <EditText
-                android:id="@+id/editTextBuscar"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:autofillHints=""
-                android:background="@android:color/transparent"
-                android:hint="@string/buscar"
-                android:inputType="text"
-                android:minHeight="48dp"
-                android:paddingStart="10dp"
-                android:paddingLeft="10dp"
-                android:paddingTop="10dp"
-                android:textSize="22sp"
-                app:layout_constraintEnd_toStartOf="@id/btnMicrofono"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tvCaducidad"
-                tools:ignore="RtlHardcoded,RtlSymmetry,VisualLintTextFieldSize" />
 
-            <ImageView
-                android:id="@+id/btnMicrofono"
-                android:layout_width="40dp"
-                android:layout_height="47dp"
-                app:srcCompat="@drawable/mic"
-                android:background="?android:attr/selectableItemBackground"
-                app:layout_constraintTop_toBottomOf="@id/tvCaducidad"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:contentDescription="@string/todo" />
-
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/ItemAgregar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="14dp"
-                android:backgroundTint="@android:color/darker_gray"
-                android:contentDescription="@string/btnAgg"
-                app:elevation="6dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:pressedTranslationZ="12dp"
-                app:srcCompat="@drawable/mas" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
        

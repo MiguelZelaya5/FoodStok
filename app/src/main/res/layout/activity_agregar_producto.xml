@@ -137,6 +137,15 @@
             android:entries="@array/escala"
             android:minHeight="48dp" />
 
+        <EditText
+            android:id="@+id/spialmacen"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Nombre de Almacen"
+            android:background="@drawable/custom_edittext_bg"
+            android:dropDownVerticalOffset="40dp"
+            android:minHeight="48dp"/>
+
         <ImageView
             android:id="@+id/ivProductImage"
             android:layout_width="150dp"

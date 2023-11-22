@@ -22,6 +22,7 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -44,6 +45,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Calendar;
+import java.util.List;
 
 public class agregar_producto extends AppCompatActivity {
 
@@ -52,11 +54,12 @@ public class agregar_producto extends AppCompatActivity {
     DrawerLayout drawerLayout;
     ImageView menu;
     LinearLayout exit,about,categoria,Almacen,home,addP,salir;
-    private EditText etProductName, etQuantity;
+    private EditText etProductName, etQuantity,spialmacen;
     private TextView tvManufacturingDate, tvExpirationDate;
     private Spinner spincategoria;
     private String imageFilePath = "";
     private ImageView imageView;
+    private DatabaseHelper databaseHelper;
     private Button btnDecrease, btnIncrease, btnScanBarcode, btnAddProduct;
 
     private int mYear, mMonth, mDay;
@@ -80,6 +83,7 @@ public class agregar_producto extends AppCompatActivity {
         sharedPreferences = this.getSharedPreferences("session", Context.MODE_PRIVATE);
         etProductName = findViewById(R.id.etProductName);
         etQuantity = findViewById(R.id.etQuantity);
+        databaseHelper = new DatabaseHelper(this);
         tvManufacturingDate = findViewById(R.id.tvManufacturingDate);
         tvExpirationDate = findViewById(R.id.tvExpirationDate);
         imageView = findViewById(R.id.ivProductImage);
@@ -98,6 +102,9 @@ public class agregar_producto extends AppCompatActivity {
         categoria=findViewById(R.id.categoria);
 
         fab = findViewById(R.id.addProducto);
+
+        spialmacen = findViewById(R.id.spialmacen);
+
 
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -262,6 +269,7 @@ public class agregar_producto extends AppCompatActivity {
 
         String fechafabricacion=tvManufacturingDate.getText().toString();
         String fechacaducidad=tvExpirationDate.getText().toString();
+        String almcennombre=spialmacen.getText().toString();
 
         if (fechafabricacion.trim().isEmpty()) {
             // Manejar el caso en que la fecha de fabricación esté vacía
@@ -306,6 +314,7 @@ public class agregar_producto extends AppCompatActivity {
         values.put("cantidad", cantidad);
         values.put("foto", imagenCategoria);
         values.put("id_usuario", userId);
+        values.put("AlmacenM", almcennombre);
         long resultado = database.insert("articulos", null, values);
         if (resultado != -1) {
             Toast.makeText(this, R.string.producto_agregado_correctamente, Toast.LENGTH_SHORT).show();
@@ -314,6 +323,7 @@ public class agregar_producto extends AppCompatActivity {
             tvManufacturingDate.setText("");
             tvExpirationDate.setText("");
             imageView.setImageResource(R.drawable.foto);
+            spialmacen.setText("");
         } else {
             Toast.makeText(this, R.string.error_al_agregar_el_producto, Toast.LENGTH_SHORT).show();
         }

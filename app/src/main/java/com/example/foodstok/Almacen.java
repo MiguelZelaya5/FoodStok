@@ -1,34 +1,57 @@
 package com.example.foodstok;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
+import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.view.View;
 import android.widget.Toast;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
+import java.util.List;
+
 public class Almacen extends AppCompatActivity {
 
     DrawerLayout drawerLayout;
     ImageView menu;
+    private AlmcacenData adapter;
+    private RecyclerView recyclerView;
+    private DatabaseHelper databaseHelper;
     private SharedPreferences sharedPreferences;
     LinearLayout exit,about,categoria,Almacen,home,salir;
     private Button btnBuscar2;
+    private FloatingActionButton btnAgregarAl;
+    private EditText editTextAlmacen;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_almacen);
         sharedPreferences = getSharedPreferences("session", MODE_PRIVATE);
         drawerLayout = findViewById(R.id.drawerLayout);
+        databaseHelper = new DatabaseHelper(this);
         menu=findViewById(R.id.menu);
         home=findViewById(R.id.home);
         about=findViewById(R.id.about);
@@ -36,7 +59,13 @@ public class Almacen extends AppCompatActivity {
         Almacen=findViewById(R.id.Almacen);
         categoria=findViewById(R.id.categoria);
         salir=findViewById(R.id.salir);
-        btnBuscar2=findViewById(R.id.btnBuscar2);
+
+        //btnAgregarAl=findViewById(R.id.ItemAgregar);
+        //editTextAlmacen=findViewById(R.id.editTextAlmacen);
+
+        recyclerView = findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
 
         int userId = getUserIdFromSharedPreferences();
         String[] selectionArgs = new String[]{String.valueOf(userId)};
@@ -88,6 +117,10 @@ public class Almacen extends AppCompatActivity {
                 finishAffinity();
             }
         });
+
+        obtenerAlmacenes();
+
+
 
     }
     public static void openDrawer(DrawerLayout drawerLayout){
@@ -150,4 +183,118 @@ public class Almacen extends AppCompatActivity {
         } else {
             textViewNoArticulos.setVisibility(View.VISIBLE);
         }*/
+
+    /*private void mostrarCuadroDialogo() {
+        LayoutInflater inflater = LayoutInflater.from(this);
+
+        View dialogView = inflater.inflate(R.layout.layout_cuadro_dialogo, null);
+
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setView(dialogView)
+                .setTitle("Ingrese el nombre del almacén")
+                .setPositiveButton("Guardar", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // Obtiene el texto ingresado por el usuario
+                        EditText editTextAlmacen = dialogView.findViewById(R.id.editTextAlmacen);
+                        String nombreAlmacen = editTextAlmacen.getText().toString();
+
+                        guardarNombreAlmacenEnBD(nombreAlmacen);
+                    }
+                })
+                .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+
+                    }
+                });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }*/
+    private void guardarNombreAlmacenEnBD(String nombreAlmacen) {
+
+        DatabaseHelper databaseHelper = new DatabaseHelper(this);
+
+        // Obtén la instancia de la base de datos en modo escritura
+        SQLiteDatabase database = databaseHelper.getWritableDatabase();
+
+        // Obtén el ID del usuario de las preferencias compartidas
+        int userId = getUserIdFromSharedPreferences();
+
+        // Obtén el nombre del almacén del EditText
+        //String almacen = editTextAlmacen.getText().toString();
+
+        try {
+            ContentValues values = new ContentValues();
+
+            // No es necesario establecer valores nulos para las otras columnas
+            // Solo establece el valor para la columna "AlmacenM"
+            values.put("AlmacenM", nombreAlmacen);
+
+
+            // Inserta el registro en la tabla "articulos"
+            long resultado = database.insert("articulos", null, values);
+
+            if (resultado != -1) {
+                Toast.makeText(this, "Agregado", Toast.LENGTH_SHORT).show();
+                editTextAlmacen.setText("");
+            } else {
+                Toast.makeText(this, "Error al agregar", Toast.LENGTH_SHORT).show();
+            }
+        } catch (Exception e) {
+            // Manejar cualquier excepción que pueda ocurrir durante la inserción
+            e.printStackTrace();
+            Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show();
+        } finally {
+            // Asegúrate de cerrar la base de datos para liberar recursos
+            database.close();
+        }
+
+
+    }
+
+    public void obtenerAlmacenes() {
+        SQLiteDatabase db = databaseHelper.getReadableDatabase();
+        int userId = getUserIdFromSharedPreferences();
+        String[] selectionArgs = new String[]{String.valueOf(userId)}; // Convertir el int a String
+
+        Cursor cursor = db.rawQuery("SELECT DISTINCT AlmacenM FROM articulos WHERE id_usuario = ?", selectionArgs);
+
+        // Comprueba si hay resultados en el cursor
+        if (cursor != null && cursor.moveToFirst()) {
+            // Crea una lista para almacenar los datos obtenidos
+            List<DataAlmacen> dataalmacen = new ArrayList<>();
+
+
+            do {
+                // Obtén los valores de cada columna en el cursor
+
+                String AlmacenM = cursor.getString(0);
+
+
+                // Crea un objeto DataItem con los datos obtenidos
+                DataAlmacen dataalmace = new DataAlmacen( AlmacenM);
+
+                // Agrega el objeto a la lista
+                dataalmacen.add(dataalmace);
+
+            } while (cursor.moveToNext());
+
+            // Cierra el cursor después de usarlo
+            cursor.close();
+
+            // Crea un adaptador y configúralo en el RecyclerView
+            adapter = new AlmcacenData(dataalmacen);
+            recyclerView.setAdapter(adapter);
+        } else {
+            // No se encontraron datos en la base de datos
+            Toast.makeText(this, "No se encontraron datos", Toast.LENGTH_SHORT).show();
+        }
+
+        // Cierra la conexión a la base de datos después de usarla
+        db.close();
+    }
+
+
+
 }
