@@ -16,7 +16,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE usuarios (idusuarios INTEGER PRIMARY KEY AUTOINCREMENT, nombre VARCHAR(45), correoelectronico VARCHAR(45), contrasena VARCHAR(45), apellido VARCHAR(45));");
         db.execSQL("CREATE TABLE productos (idproducto INTEGER PRIMARY KEY AUTOINCREMENT, nombreproducto VARCHAR(45), cantidad INTEGER, idusuario INTEGER, FOREIGN KEY (idusuario) REFERENCES usuarios(idusuarios));");
-        db.execSQL("CREATE TABLE articulos (idarticulo INTEGER PRIMARY KEY AUTOINCREMENT, categoria VARCHAR(45), nombrearticulo VARCHAR(45), fechafabricacion DATE, fechacaducidad DATE, cantidad INTEGER, foto BLOB, id_usuario INTEGER, FOREIGN KEY (id_usuario) REFERENCES usuarios(idusuarios));");
+        db.execSQL("CREATE TABLE articulos (idarticulo INTEGER PRIMARY KEY AUTOINCREMENT, categoria VARCHAR(45), nombrearticulo VARCHAR(45), fechafabricacion DATE, fechacaducidad DATE, cantidad INTEGER, foto BLOB, id_usuario INTEGER, AlmacenM VARCHAR(45), FOREIGN KEY (id_usuario) REFERENCES usuarios(idusuarios));");
     }
 
     @Override

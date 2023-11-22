@@ -22,7 +22,7 @@ public class Almacen extends AppCompatActivity {
     ImageView menu;
     private SharedPreferences sharedPreferences;
     LinearLayout exit,about,categoria,Almacen,home,salir;
-    private Button menuButton;
+    private Button btnBuscar2;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +36,7 @@ public class Almacen extends AppCompatActivity {
         Almacen=findViewById(R.id.Almacen);
         categoria=findViewById(R.id.categoria);
         salir=findViewById(R.id.salir);
+        btnBuscar2=findViewById(R.id.btnBuscar2);
 
         int userId = getUserIdFromSharedPreferences();
         String[] selectionArgs = new String[]{String.valueOf(userId)};

@@ -40,6 +40,9 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import java.io.ByteArrayOutputStream;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Calendar;
 
 public class agregar_producto extends AppCompatActivity {
@@ -156,6 +159,13 @@ public class agregar_producto extends AppCompatActivity {
                 finishAffinity();
             }
         });
+        categoria.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                redirectActivity(agregar_producto.this, Categorias.class);
+                finish();
+            }
+        });
 
         Almacen.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -244,8 +254,45 @@ public class agregar_producto extends AppCompatActivity {
             Toast.makeText(this, R.string.por_favor_introduce_la_cantidad, Toast.LENGTH_SHORT).show();
             return;
         }
+        if (nombreproducto.trim().isEmpty()) {
+            Toast.makeText(this, R.string.por_favor_introduce_un_nombre_de_producto_v_lido, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+
         String fechafabricacion=tvManufacturingDate.getText().toString();
         String fechacaducidad=tvExpirationDate.getText().toString();
+
+        if (fechafabricacion.trim().isEmpty()) {
+            // Manejar el caso en que la fecha de fabricación esté vacía
+            Toast.makeText(this, "Ingresa la fecha de fabricación", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (fechacaducidad.trim().isEmpty()) {
+            // Manejar el caso en que la fecha de caducidad esté vacía
+            Toast.makeText(this, "Ingresa la fecha de caducidad", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+        try {
+            LocalDate fechaFabricacion = LocalDate.parse(fechafabricacion, formatter);
+            LocalDate fechaCaducidad = LocalDate.parse(fechacaducidad, formatter);
+
+            if (fechaCaducidad.isBefore(fechaFabricacion)) {
+                Toast.makeText(this, "Fecha de caducidad no válida", Toast.LENGTH_SHORT).show();
+                return;
+            }
+        } catch (DateTimeParseException e) {
+            // Manejar la excepción si las fechas no pueden ser parseadas
+            e.printStackTrace();
+            Toast.makeText(this, "Formato de fecha inválido", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+
         String categoria=categoriatexto;
         DatabaseHelper databaseHelper = new DatabaseHelper(this);
         SQLiteDatabase database = databaseHelper.getWritableDatabase();

@@ -9,7 +9,7 @@ public class DataItem {
     private int cantidad;
     private String idarticulo;
 
-    public DataItem(byte[] foto, String nombre, String categoria, String fechaFabricacion, String fechaCaducidad, int cantidad,String idarticulo) {
+    public DataItem(byte[] foto, String nombre, String categoria, String fechaFabricacion, String fechaCaducidad, int cantidad,String idarticulo ) {
         this.foto = foto;
         this.nombre = nombre;
         this.categoria = categoria;
