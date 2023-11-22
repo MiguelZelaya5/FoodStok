@@ -93,7 +93,7 @@
     <string name="fecha_de_fabricacionCATE">"Fecha Fabricación: "</string>
     <string name="fecha_de_caducidadcate">"Fecha caducidad: "</string>
     <string name="cantidadcate">"Cantidad: "</string>
-    <string name="desea_eliminar_este_contactollenar">¿Desea eliminar este contacto?</string>
+    <string name="desea_eliminar_este_contactollenar">¿Desea eliminar este Articulo?</string>
     <string name="sillenar">SI</string>
     <string name="nollenar">NO</string>
     <string name="canceladollenar">Cancelado</string>
