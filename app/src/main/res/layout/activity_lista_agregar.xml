@@ -26,14 +26,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:layout_weight="1"
-                android:hint="Nombre del producto" />
+                android:hint="@string/nombre_del_productoo" />
 
             <EditText
                 android:id="@+id/editTextCantidad"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:layout_weight="3.5"
-                android:hint="Cantidad"
+                android:hint="@string/cantidaddd"
                 android:inputType="number"
                 android:textAlignment="center" />
         </LinearLayout>
@@ -48,7 +48,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:onClick="agregarProducto"
-                android:text="Agregar Producto" />
+                android:text="@string/agregar_productooo" />
 
             <Button
                 android:id="@+id/btnGuardar"
@@ -58,7 +58,7 @@
                 android:layout_weight="0.5"
                 android:backgroundTint="@color/aquaclaro"
                 android:onClick="guardarLista"
-                android:text="Guardar Lista" />
+                android:text="@string/guardar_lista" />
         </LinearLayout>
 
         <LinearLayout
@@ -71,7 +71,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:onClick="eliminarProductos"
-                android:text="Eliminar productos" />
+                android:text="@string/eliminar_productosss" />
 
             <Button
                 android:id="@+id/btn_lista"
@@ -80,7 +80,7 @@
                 android:layout_marginLeft="60dp"
                 android:layout_weight="0.5"
                 android:backgroundTint="@color/aqua"
-                android:text="Tus listas" />
+                android:text="@string/tus_listass" />
 
 
         </LinearLayout>
@@ -89,8 +89,14 @@
         <ListView
             android:id="@+id/listViewProducto"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="455dp"
             android:choiceMode="multipleChoice" />
+
+        <Button
+            android:id="@+id/btn_agg_rec"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/agregar_y_mostrar_recordatorio" />
 
     </LinearLayout>
 
@@ -98,6 +104,7 @@
         android:layout_width="300dp"
         android:layout_height="match_parent"
         android:background="@color/white"
+        android:onClick="aggRecordatorio"
         android:layout_gravity = "start">
 
         <include
