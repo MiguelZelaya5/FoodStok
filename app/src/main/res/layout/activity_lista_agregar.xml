@@ -89,8 +89,14 @@
         <ListView
             android:id="@+id/listViewProducto"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="455dp"
             android:choiceMode="multipleChoice" />
+
+        <Button
+            android:id="@+id/btn_agg_rec"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Agregar Recordatorio" />
 
     </LinearLayout>
 
@@ -98,6 +104,7 @@
         android:layout_width="300dp"
         android:layout_height="match_parent"
         android:background="@color/white"
+        android:onClick="aggRecordatorio"
         android:layout_gravity = "start">
 
         <include

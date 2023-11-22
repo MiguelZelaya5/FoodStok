@@ -5,11 +5,9 @@
     <uses-feature
         android:name="android.hardware.camera"
         android:required="false" />
-
     <uses-feature
         android:name="android.hardware.telephony"
         android:required="false" />
-
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
@@ -23,9 +21,9 @@
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_CONTACTS"/>
-    <uses-permission android:name="android.permission.WRITE_CONTACTS"/>
-    <uses-permission android:name="android.permission.CALL_PHONE"/>
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.WRITE_CONTACTS" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
 
     <application
         android:allowBackup="true"
@@ -39,16 +37,20 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".recordatorio"
+            android:exported="false" />
+        <activity
             android:name=".lista_agregar"
-            android:exported="false"/>
+            android:exported="false" />
         <activity
             android:name=".LlenarProducto"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
             android:exported="false" />
-        <activity android:name=".lista"
-            android:exported="false"/>
+        <activity
+            android:name=".lista"
+            android:exported="false" />
         <activity
             android:name=".Registro"
             android:exported="false" />
@@ -67,7 +69,6 @@
         <activity
             android:name=".Sesion"
             android:exported="false" />
-
         <activity
             android:name=".primerapantalla"
             android:exported="true">

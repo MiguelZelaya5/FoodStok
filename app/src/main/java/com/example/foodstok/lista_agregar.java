@@ -31,7 +31,7 @@ public class lista_agregar extends AppCompatActivity {
     DrawerLayout drawerLayout;
     ImageView menu;
     LinearLayout exit,about,categoria,Almacen,home,salir;
-    private Button btn_lista;
+    private Button btn_lista, btn_agg_recordatorio;
     private EditText editTextCantidad; // Nuevo EditText para la cantidad
     private ListView listViewProductos;
     private ArrayAdapter<String> adapter;
@@ -52,6 +52,7 @@ public class lista_agregar extends AppCompatActivity {
         Almacen=findViewById(R.id.Almacen);
         categoria=findViewById(R.id.categoria);
         salir=findViewById(R.id.salir);
+        btn_agg_recordatorio=findViewById(R.id.btn_agg_rec);
         btn_lista = findViewById(R.id.btn_lista);
         editTextProducto = findViewById(R.id.editTextProduct);
         editTextCantidad = findViewById(R.id.editTextCantidad); // Enlazar con el EditText en el layout
@@ -68,6 +69,14 @@ public class lista_agregar extends AppCompatActivity {
 
 
         sharedPreferences = (lista_agregar.this).getSharedPreferences("session", Context.MODE_PRIVATE);
+
+        btn_agg_recordatorio.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(lista_agregar.this, recordatorio.class);
+                startActivity(intent);
+            }
+        });
 
         btn_lista.setOnClickListener(new View.OnClickListener() {
             @Override
