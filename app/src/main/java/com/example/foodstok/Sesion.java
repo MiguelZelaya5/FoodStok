@@ -38,10 +38,21 @@ public class Sesion extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sesion);
 
+
         inises = findViewById(R.id.inise);
         correoEditText = findViewById(R.id.Correo);
         contraEditText = findViewById(R.id.contra);
         databaseHelper = new DatabaseHelper(this);
+        Intent intent = getIntent();
+        if (intent != null && intent.hasExtra("correo_usuario") && intent.hasExtra("contrasena_usuario")) {
+            // Obtener los valores de los extras
+            String correoUsuario = intent.getStringExtra("correo_usuario");
+            String contrasenaUsuario = intent.getStringExtra("contrasena_usuario");
+
+            // Llenar los campos de correo y contraseña con los datos obtenidos
+            correoEditText.setText(correoUsuario);
+            contraEditText.setText(contrasenaUsuario);
+        }
         // Inicializar instancia de SharedPreferences
         sharedPreferences = getSharedPreferences("session", Context.MODE_PRIVATE);
         if (isUserLoggedIn()) {

@@ -100,48 +100,7 @@ public class MainActivity extends AppCompatActivity {
         // Aquí hay un ejemplo de cómo obtener los datos de una consulta a la base de datos:
 
         // Crea una instancia de tu base de datos
-        SQLiteDatabase db = databaseHelper.getReadableDatabase();
-        int userId = getUserIdFromSharedPreferences();
-        String[] selectionArgs = new String[]{String.valueOf(userId)}; // Convertir el int a String
-
-        Cursor cursor = db.rawQuery("SELECT foto, nombrearticulo, categoria, fechafabricacion, fechacaducidad, cantidad,idarticulo FROM articulos WHERE id_usuario = ?", selectionArgs);
-        // Comprueba si hay resultados en el cursor
-        if (cursor != null && cursor.moveToFirst()) {
-            // Crea una lista para almacenar los datos obtenidos
-            List<DataItem> dataItems = new ArrayList<>();
-
-
-            do {
-                // Obtén los valores de cada columna en el cursor
-                byte[] foto = cursor.getBlob(0);
-                String nombre = cursor.getString(1);
-                String categoria = cursor.getString(2);
-                String fechaFabricacion = cursor.getString(3);
-                String fechaCaducidad = cursor.getString(4);
-                int cantidad = cursor.getInt(5);
-                String idarticulo=cursor.getString(6);
-
-                // Crea un objeto DataItem con los datos obtenidos
-                DataItem dataItem = new DataItem(foto, nombre, categoria, fechaFabricacion, fechaCaducidad, cantidad,idarticulo);
-
-                // Agrega el objeto a la lista
-                dataItems.add(dataItem);
-
-            } while (cursor.moveToNext());
-
-            // Cierra el cursor después de usarlo
-            cursor.close();
-
-            // Crea un adaptador y configúralo en el RecyclerView
-            adapter = new RecyclerViewAdapter(dataItems);
-            recyclerView.setAdapter(adapter);
-        } else {
-            // No se encontraron datos en la base de datos
-            Toast.makeText(this, "No se encontraron datos", Toast.LENGTH_SHORT).show();
-        }
-
-        // Cierra la conexión a la base de datos después de usarla
-        db.close();
+        reloadRecyclerViewData();
 
         home.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -192,7 +151,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 redirectActivity(MainActivity.this, agregar_producto.class);
-                finish();
             }
         });
 
@@ -208,6 +166,56 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(MainActivity.this, Sesion.class);
         startActivity(intent);
         finish(); // Cerrar la actividad actual (Inicio)
+    }
+    private void reloadRecyclerViewData() {
+        SQLiteDatabase db = databaseHelper.getReadableDatabase();
+        int userId = getUserIdFromSharedPreferences();
+        String[] selectionArgs = new String[]{String.valueOf(userId)}; // Convertir el int a String
+
+        Cursor cursor = db.rawQuery("SELECT foto, nombrearticulo, categoria, fechafabricacion, fechacaducidad, cantidad,idarticulo FROM articulos WHERE id_usuario = ?", selectionArgs);
+        // Comprueba si hay resultados en el cursor
+        if (cursor != null && cursor.moveToFirst()) {
+            // Crea una lista para almacenar los datos obtenidos
+            List<DataItem> dataItems = new ArrayList<>();
+
+
+            do {
+                // Obtén los valores de cada columna en el cursor
+                byte[] foto = cursor.getBlob(0);
+                String nombre = cursor.getString(1);
+                String categoria = cursor.getString(2);
+                String fechaFabricacion = cursor.getString(3);
+                String fechaCaducidad = cursor.getString(4);
+                int cantidad = cursor.getInt(5);
+                String idarticulo=cursor.getString(6);
+
+                // Crea un objeto DataItem con los datos obtenidos
+                DataItem dataItem = new DataItem(foto, nombre, categoria, fechaFabricacion, fechaCaducidad, cantidad,idarticulo);
+
+                // Agrega el objeto a la lista
+                dataItems.add(dataItem);
+
+            } while (cursor.moveToNext());
+
+            // Cierra el cursor después de usarlo
+            cursor.close();
+
+            // Crea un adaptador y configúralo en el RecyclerView
+            adapter = new RecyclerViewAdapter(dataItems);
+            recyclerView.setAdapter(adapter);
+        } else {
+            // No se encontraron datos en la base de datos
+            Toast.makeText(this, "No se encontraron datos", Toast.LENGTH_SHORT).show();
+        }
+
+        // Cierra la conexión a la base de datos después de usarla
+        db.close();
+
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        reloadRecyclerViewData();
     }
 
     private void setLoggedIn(boolean isLoggedIn) {
@@ -245,7 +253,7 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(activity, secondActivity);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         activity.startActivity(intent);
-        activity.finish();
+
     }
 
     @Override

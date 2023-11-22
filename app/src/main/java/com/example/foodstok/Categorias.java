@@ -292,7 +292,7 @@ public class Categorias extends AppCompatActivity {
         Intent intent = new Intent(activity, secondActivity);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         activity.startActivity(intent);
-        activity.finish();
+
     }
     private void logout() {
         // Realizar aquí las tareas de cierre de sesión, como borrar datos de sesión, etc.

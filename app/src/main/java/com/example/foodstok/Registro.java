@@ -50,6 +50,14 @@ public class Registro extends AppCompatActivity {
                     Toast.makeText(Registro.this, "Por favor, complete todos los campos", Toast.LENGTH_SHORT).show();
                     return;
                 }
+                if (contra.length() < 5) {
+                    Toast.makeText(Registro.this, "La contraseña debe tener al menos 5 caracteres", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (!isValidEmail(email)) {
+                    Toast.makeText(Registro.this, "Por favor, ingrese un correo electrónico válido", Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
                 // Realizar el registro en la base de datos (aquí debes implementar tu lógica de base de datos)
                 boolean exitoRegistro = registrarUsuario(nombree, apellido, email, contra);
@@ -58,6 +66,8 @@ public class Registro extends AppCompatActivity {
                     Toast.makeText(Registro.this, "Registro exitoso", Toast.LENGTH_SHORT).show();
                     // Aquí puedes redirigir al usuario a otra actividad o realizar alguna acción adicional
                     Intent intent = new Intent(Registro.this, Sesion.class);
+                    intent.putExtra("correo_usuario", email);
+                    intent.putExtra("contrasena_usuario", contra);
                     startActivity(intent);
                     finish();
                 } else {
@@ -66,6 +76,10 @@ public class Registro extends AppCompatActivity {
             }
         });
 
+    }
+    private boolean isValidEmail(String email) {
+        String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
+        return email.matches(emailPattern);
     }
 
     private boolean registrarUsuario(String nombree, String apellido, String email, String contra) {
