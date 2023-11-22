@@ -20,15 +20,55 @@
             android:layout_height="332dp"
             android:background="#F8F7F7">
 
+            <TextView
+                android:id="@+id/caducidadTextView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginBottom="23dp"
+                android:text="caducidads"
+                android:textColor="#000000"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toTopOf="@+id/cantidadTextView2"
+                app:layout_constraintStart_toEndOf="@+id/caducidadTextView" />
+
+            <TextView
+                android:id="@+id/fabricacionTextView22"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="31dp"
+                android:layout_marginBottom="19dp"
+                android:text="fabricacionI"
+                android:textColor="#000000"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toTopOf="@+id/caducidadTextView2"
+                app:layout_constraintStart_toEndOf="@+id/fabricacionTextView" />
+
+            <TextView
+                android:id="@+id/cantidadTextView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="33dp"
+                android:layout_marginBottom="28dp"
+                android:text="cantidadss"
+                android:textColor="#000000"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/cantidadTextView" />
+
             <ImageView
                 android:id="@+id/imageView"
                 android:layout_width="142dp"
                 android:layout_height="111dp"
                 android:layout_marginStart="120dp"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="13dp"
+                android:layout_marginEnd="121dp"
+                android:layout_marginBottom="26dp"
                 android:adjustViewBounds="true"
                 android:focusableInTouchMode="false"
                 android:scaleType="centerCrop"
+                app:layout_constraintBottom_toTopOf="@+id/fabricacionTextView22"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/nombreTextView"
                 app:srcCompat="@drawable/foto" />
@@ -37,10 +77,10 @@
                 android:id="@+id/nombreTextView"
                 android:layout_width="383dp"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
+                android:layout_marginBottom="13dp"
                 android:background="#457287"
-                android:gravity="center"
 
+                android:gravity="center"
                 android:text="@string/articulo"
                 android:textColor="#FFFFFF"
                 android:textSize="30sp"
@@ -54,36 +94,36 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="21dp"
-                android:layout_marginTop="27dp"
+                android:layout_marginBottom="19dp"
                 android:text="@string/fabricacionI"
                 android:textColor="#000000"
                 android:textSize="18sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imageView" />
+                app:layout_constraintBottom_toTopOf="@+id/caducidadTextView"
+                app:layout_constraintStart_toStartOf="parent" />
 
             <TextView
                 android:id="@+id/cantidadTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="41dp"
-                android:layout_marginTop="22dp"
+                android:layout_marginBottom="28dp"
                 android:text="@string/cantidads"
                 android:textColor="#000000"
                 android:textSize="18sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/caducidadTextView" />
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
 
             <TextView
                 android:id="@+id/caducidadTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="28dp"
-                android:layout_marginTop="19dp"
+                android:layout_marginBottom="23dp"
                 android:text="@string/caducidads"
                 android:textColor="#000000"
                 android:textSize="18sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/fabricacionTextView" />
+                app:layout_constraintBottom_toTopOf="@+id/cantidadTextView"
+                app:layout_constraintStart_toStartOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
