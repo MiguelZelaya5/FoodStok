@@ -83,13 +83,13 @@ public class LlenarProducto extends AppCompatActivity {
 
 
                 imageView.setImageBitmap(BitmapFactory.decodeByteArray(foto, 0, foto.length));
-                nombreTextView.setText("Nombre de producto: "+nombre);
-                categoriaTextView.setText("Categoria: "+categoria);
-                fabricacionTextView.setText("Fecha fabricación: "+fechaFabricacion);
-                caducidadTextView.setText("Fecha Caducidad: "+fechaCaducidad);
+                nombreTextView.setText(getString(R.string.llenarnombre)+nombre);
+                categoriaTextView.setText(getString(R.string.llenarcategoria)+categoria);
+                fabricacionTextView.setText(getString(R.string.llenarfabricacion)+fechaFabricacion);
+                caducidadTextView.setText(getString(R.string.llenarcaducidad)+fechaCaducidad);
                 String cantidads;
                 cantidads=String.valueOf(cantidad);
-                cantidadTextView.setText("Cantidad: "+cantidads);
+                cantidadTextView.setText(getString(R.string.llenarcantidad)+cantidads);
             } else {
                 Log.e("LlenarProducto", "No se encontraron resultados para el ID del artículo: " + idArticulo);
             }

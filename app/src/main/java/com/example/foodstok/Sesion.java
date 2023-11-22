@@ -73,7 +73,7 @@ public class Sesion extends AppCompatActivity {
                 String email = correoEditText.getText().toString();
                 String password = contraEditText.getText().toString();
                 if (email.isEmpty() || password.isEmpty()) {
-                    Toast.makeText(Sesion.this, "Por favor, ingresa todos los campos", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Sesion.this, R.string.por_favor_ingresa_todos_los_campos, Toast.LENGTH_SHORT).show();
                 } else {
                     // Verificar las credenciales en la base de datos
                     if (checkCredentials(email, password)) {
@@ -84,7 +84,7 @@ public class Sesion extends AppCompatActivity {
                         redirectToHome(Sesion.this, MainActivity.class); // Redirigir a la actividad de inicio
                     } else {
                         // Credenciales incorrectas, mostrar mensaje de error
-                        Toast.makeText(Sesion.this, "Credenciales incorrectas", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(Sesion.this, R.string.credenciales_incorrectas, Toast.LENGTH_SHORT).show();
                     }
                 }
 
@@ -108,7 +108,7 @@ public class Sesion extends AppCompatActivity {
             cursor.close();
             db.close();
         } catch (Exception e) {
-            Toast.makeText(Sesion.this, "Error al obtener el ID del usuario: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(Sesion.this, getString(R.string.error_al_obtener_el_id_del_usuario) + e.getMessage(), Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         }
 
@@ -131,7 +131,7 @@ public class Sesion extends AppCompatActivity {
             editor.putBoolean("isLoggedIn", isLoggedIn);
             editor.apply();
         } catch (Exception e) {
-            Toast.makeText(Sesion.this, "Error al guardar el estado de inicio de sesión: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(Sesion.this, getString(R.string.error_al_guardar_el_estado_de_inicio_de_sesi_n) + e.getMessage(), Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         }
     }
@@ -149,7 +149,7 @@ public class Sesion extends AppCompatActivity {
             cursor.close();
             db.close();
         } catch (Exception e) {
-            Toast.makeText(Sesion.this, "Error al verificar las credenciales: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(Sesion.this, getString(R.string.error_al_verificar_las_credenciales) + e.getMessage(), Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         }
 
@@ -159,7 +159,7 @@ public class Sesion extends AppCompatActivity {
         try {
             sharedPreferences.edit().putInt("idusuarios", userId).apply();
         } catch (Exception e) {
-            Toast.makeText(Sesion.this, "Error al guardar el ID del usuario: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(Sesion.this, getString(R.string.error_al_guardar_el_id_del_usuario) + e.getMessage(), Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         }
     }

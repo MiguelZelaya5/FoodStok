@@ -208,7 +208,7 @@ public class agregar_producto extends AppCompatActivity {
             }
         } catch (NumberFormatException e) {
             // Manejar la excepción aquí, por ejemplo, mostrar un mensaje de error
-            Toast.makeText(this, "Valor no válido", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.valor_no_v_lido, Toast.LENGTH_SHORT).show();
         }
     }
     private void increaseQuantity() {
@@ -217,31 +217,31 @@ public class agregar_producto extends AppCompatActivity {
             quantity++;
             etQuantity.setText(String.valueOf(quantity));
         } catch (NumberFormatException e) {
-            // Manejar la excepción aquí, por ejemplo, mostrar un mensaje de error
-            Toast.makeText(this, "Valor no válido", Toast.LENGTH_SHORT).show();
+
+            Toast.makeText(this, R.string.valor_no_v_lido, Toast.LENGTH_SHORT).show();
         }
     }
-    private void scanBarcode() {
-        IntentIntegrator integrator = new IntentIntegrator(this);
-        integrator.setDesiredBarcodeFormats(IntentIntegrator.ALL_CODE_TYPES);
-        integrator.setPrompt("Escanea un código de barras");
-        integrator.setCameraId(0);  // Cámara trasera por defecto
-        integrator.initiateScan();
-    }
+    //private void scanBarcode() {
+     //   IntentIntegrator integrator = new IntentIntegrator(this);
+     //   integrator.setDesiredBarcodeFormats(IntentIntegrator.ALL_CODE_TYPES);
+      //  integrator.setPrompt("Escanea un código de barras");
+      //  integrator.setCameraId(0);  // Cámara trasera por defecto
+      //  integrator.initiateScan();
+   // }
     private void addProduct() {
 
         this.categoriaspiner();
         String nombreproducto=etProductName.getText().toString();
         if (nombreproducto.trim().isEmpty()) {
-            // Mostrar un mensaje de error porque el campo está vacío
-            Toast.makeText(this, "Por favor, introduce un nombre de producto válido", Toast.LENGTH_SHORT).show();
-            return; // Salir del método para evitar agregar un producto vacío
+
+            Toast.makeText(this, R.string.por_favor_introduce_un_nombre_de_producto_v_lido, Toast.LENGTH_SHORT).show();
+            return;
         }
 
         int cantidad = Integer.parseInt(etQuantity.getText().toString());
         if (cantidad==0) {
-            // Mostrar un mensaje de error porque el campo está vacío
-            Toast.makeText(this, "Por favor, introduce la cantidad", Toast.LENGTH_SHORT).show();
+
+            Toast.makeText(this, R.string.por_favor_introduce_la_cantidad, Toast.LENGTH_SHORT).show();
             return;
         }
         String fechafabricacion=tvManufacturingDate.getText().toString();
@@ -261,14 +261,14 @@ public class agregar_producto extends AppCompatActivity {
         values.put("id_usuario", userId);
         long resultado = database.insert("articulos", null, values);
         if (resultado != -1) {
-            Toast.makeText(this, "Producto agregado correctamente", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.producto_agregado_correctamente, Toast.LENGTH_SHORT).show();
             etProductName.setText("");
             etQuantity.setText("0");
             tvManufacturingDate.setText("");
             tvExpirationDate.setText("");
             imageView.setImageResource(R.drawable.foto);
         } else {
-            Toast.makeText(this, "Error al agregar el producto", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.error_al_agregar_el_producto, Toast.LENGTH_SHORT).show();
         }
 
         database.close();
@@ -278,40 +278,40 @@ public class agregar_producto extends AppCompatActivity {
 
     public void categoriaspiner(){
         String escala=spincategoria.getSelectedItem().toString();
-        if (escala.equals("Carnes")) {
-            categoriatexto="Carnes";
+        if (escala.equals(getString(R.string.carnes1))) {
+            categoriatexto=getString(R.string.carnes1);
 
-        } else if (escala.equals("Lacteos")) {
+        } else if (escala.equals(getString(R.string.lacteos1))) {
 
-            categoriatexto="Lacteos";
+            categoriatexto=getString(R.string.lacteos1);
 
-        } else if (escala.equals("Vegetales")) {
+        } else if (escala.equals(getString(R.string.vegetales1))) {
 
-            categoriatexto="Vegetales";
+            categoriatexto=getString(R.string.vegetales1);
 
-        } else if (escala.equals("Fruta")) {
+        } else if (escala.equals(getString(R.string.fruta1))) {
 
-            categoriatexto="Fruta";
+            categoriatexto=getString(R.string.fruta1);
 
-        }else if(escala.equals("Aderezo")){
-            categoriatexto="Aderezo";
-        }else if(escala.equals("Salsas")){
-        categoriatexto="Aderezo";
-        }else if(escala.equals("Productos enlatados")){
-            categoriatexto="Productos enlatados";
-        }else if(escala.equals("Bebidas")){
-            categoriatexto="Bebidas";
-        }else if(escala.equals("Harinas")){
-            categoriatexto="Harinas";
-        } else if (escala.equals("Otros")) {
-            categoriatexto="Otros";
+        }else if(escala.equals(getString(R.string.aderezo1))){
+            categoriatexto=getString(R.string.aderezo1);
+        }else if(escala.equals(getString(R.string.salsas1))){
+        categoriatexto=getString(R.string.salsas1);
+        }else if(escala.equals(getString(R.string.productos_enlatados1))){
+            categoriatexto=getString(R.string.productos_enlatados1);
+        }else if(escala.equals(getString(R.string.bebidas1))){
+            categoriatexto=getString(R.string.bebidas1);
+        }else if(escala.equals(getString(R.string.harinas1))){
+            categoriatexto=getString(R.string.harinas1);
+        } else if (escala.equals(getString(R.string.otros1))) {
+            categoriatexto=getString(R.string.otros1);
         }
     }
     private void showImageSelectionOptions() {
-        String[] options = {"Tomar fotografía"};
+        String[] options = {getString(R.string.tomar_fotograf_a)};
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Seleccionar imagen");
+        builder.setTitle(R.string.seleccionar_imagen);
         builder.setItems(options, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {

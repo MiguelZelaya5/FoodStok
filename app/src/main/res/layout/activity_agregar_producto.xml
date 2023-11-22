@@ -151,7 +151,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="Toma una foto de el producto a registrar"
+            android:text="@string/toma_una_foto_de_el_producto_a_registrar"
             android:textAlignment="center"
             android:textColor="#8A8686"
             android:textColorHint="#00FFFFFF" />

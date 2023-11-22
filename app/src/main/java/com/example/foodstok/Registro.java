@@ -47,15 +47,15 @@ public class Registro extends AppCompatActivity {
                 String contra = contrasena.getText().toString();
 
                 if (nombree.isEmpty() || apellido.isEmpty() || email.isEmpty() || contra.isEmpty()) {
-                    Toast.makeText(Registro.this, "Por favor, complete todos los campos", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Registro.this, R.string.por_favor_complete_todos_los_campos, Toast.LENGTH_SHORT).show();
                     return;
                 }
                 if (contra.length() < 5) {
-                    Toast.makeText(Registro.this, "La contraseña debe tener al menos 5 caracteres", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Registro.this, R.string.la_contrase_a_debe_tener_al_menos_5_caracteres, Toast.LENGTH_SHORT).show();
                     return;
                 }
                 if (!isValidEmail(email)) {
-                    Toast.makeText(Registro.this, "Por favor, ingrese un correo electrónico válido", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Registro.this, R.string.por_favor_ingrese_un_correo_electr_nico_v_lido, Toast.LENGTH_SHORT).show();
                     return;
                 }
 
@@ -63,7 +63,7 @@ public class Registro extends AppCompatActivity {
                 boolean exitoRegistro = registrarUsuario(nombree, apellido, email, contra);
 
                 if (exitoRegistro) {
-                    Toast.makeText(Registro.this, "Registro exitoso", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Registro.this, R.string.registro_exitoso, Toast.LENGTH_SHORT).show();
                     // Aquí puedes redirigir al usuario a otra actividad o realizar alguna acción adicional
                     Intent intent = new Intent(Registro.this, Sesion.class);
                     intent.putExtra("correo_usuario", email);
@@ -71,7 +71,7 @@ public class Registro extends AppCompatActivity {
                     startActivity(intent);
                     finish();
                 } else {
-                    Toast.makeText(Registro.this, "Error en el registro. Inténtalo de nuevo", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Registro.this, R.string.error_en_el_registro_int_ntalo_de_nuevo, Toast.LENGTH_SHORT).show();
                 }
             }
         });
