@@ -45,18 +45,18 @@ public class Sesion extends AppCompatActivity {
         databaseHelper = new DatabaseHelper(this);
         Intent intent = getIntent();
         if (intent != null && intent.hasExtra("correo_usuario") && intent.hasExtra("contrasena_usuario")) {
-            // Obtener los valores de los extras
+
             String correoUsuario = intent.getStringExtra("correo_usuario");
             String contrasenaUsuario = intent.getStringExtra("contrasena_usuario");
 
-            // Llenar los campos de correo y contraseña con los datos obtenidos
+
             correoEditText.setText(correoUsuario);
             contraEditText.setText(contrasenaUsuario);
         }
-        // Inicializar instancia de SharedPreferences
+
         sharedPreferences = getSharedPreferences("session", Context.MODE_PRIVATE);
         if (isUserLoggedIn()) {
-            redirectToHome(Sesion.this, MainActivity.class); // Redirigir a la actividad de inicio directamente
+            redirectToHome(Sesion.this, MainActivity.class);
         }
         iniciarSesionButton = findViewById(R.id.btn_iniciar);
 
@@ -75,13 +75,13 @@ public class Sesion extends AppCompatActivity {
                 if (email.isEmpty() || password.isEmpty()) {
                     Toast.makeText(Sesion.this, R.string.por_favor_ingresa_todos_los_campos, Toast.LENGTH_SHORT).show();
                 } else {
-                    // Verificar las credenciales en la base de datos
+
                     if (checkCredentials(email, password)) {
-                        // Iniciar sesión exitosa
-                        int userId = getUserId(email); // Obtener el ID del usuario desde la base de datos
-                        setLoggedIn(true); // Guardar el estado de inicio de sesión en SharedPreferences
-                        saveUserId(userId); // Guardar el ID del usuario en SharedPreferences
-                        redirectToHome(Sesion.this, MainActivity.class); // Redirigir a la actividad de inicio
+
+                        int userId = getUserId(email);
+                        setLoggedIn(true);
+                        saveUserId(userId);
+                        redirectToHome(Sesion.this, MainActivity.class);
                     } else {
                         // Credenciales incorrectas, mostrar mensaje de error
                         Toast.makeText(Sesion.this, R.string.credenciales_incorrectas, Toast.LENGTH_SHORT).show();
@@ -95,7 +95,7 @@ public class Sesion extends AppCompatActivity {
     }
     @SuppressLint("Range")
     private int getUserId(String email) {
-        int userId = -1; // Valor predeterminado si no se encuentra el usuario
+        int userId = -1;
 
         try {
             SQLiteDatabase db = databaseHelper.getReadableDatabase();
@@ -141,7 +141,7 @@ public class Sesion extends AppCompatActivity {
         try {
             SQLiteDatabase db = databaseHelper.getReadableDatabase();
 
-            // Realizar una consulta a la base de datos para verificar las credenciales
+
             Cursor cursor = db.rawQuery("SELECT * FROM usuarios WHERE correoelectronico = ? AND contrasena = ?", new String[]{email, password});
 
             result = cursor.getCount() > 0;

@@ -133,7 +133,7 @@ public class recordatorio extends AppCompatActivity {
             try {
                 plazoRegistros = Integer.parseInt(editTextValue);
             } catch (NumberFormatException e) {
-                Toast.makeText(this, "Ingrese un valor válido en el campo de días", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.ingrese_un_valor_v_lido_en_el_campo_de_d_assss, Toast.LENGTH_SHORT).show();
                 return;
             }
         } else if (radioGroup.getCheckedRadioButtonId() == R.id.radioButton15) {
@@ -163,9 +163,9 @@ public class recordatorio extends AppCompatActivity {
 
             if (selectedDate != null && !selectedDate.before(currentDate.getTime())) {
                 savePreferencesInSharedPreferences(plazoRegistros, diaInicioMes);
-                Toast.makeText(this, "Preferencias guardadas correctamente", Toast.LENGTH_SHORT).show();
-                textViewInicioMes.setText("Día de inicio: " + diaInicioMes);
-                textViewPlazoDias.setText("Plazo de días: " + plazoRegistros);
+                Toast.makeText(this, R.string.preferencias_guardadas_correctamentesss, Toast.LENGTH_SHORT).show();
+                textViewInicioMes.setText(getString(R.string.d_a_de_inicio) + diaInicioMes);
+                textViewPlazoDias.setText(getString(R.string.plazo_de_d_as) + plazoRegistros);
                 textViewInicioMes.setVisibility(View.VISIBLE);
                 textViewPlazoDias.setVisibility(View.VISIBLE);
 
@@ -176,10 +176,10 @@ public class recordatorio extends AppCompatActivity {
                 startActivity(intent);
                 finish();
             } else {
-                Toast.makeText(this, "La fecha seleccionada debe ser igual o posterior a la fecha actual", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.la_fecha_seleccionada_debe_ser_igual_o_posterior_a_la_fecha_actual, Toast.LENGTH_SHORT).show();
             }
         } else {
-            Toast.makeText(this, "Por favor, selecciona valores válidos", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.por_favor_selecciona_valores_v_lidos, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -210,8 +210,8 @@ public class recordatorio extends AppCompatActivity {
         String diaInicioMes = sharedPreferences.getString("dia_inicio_mes", "");
 
         if (plazoRegistros != -1 && !diaInicioMes.isEmpty()) {
-            textViewInicioMes.setText("Día de inicio: " + diaInicioMes);
-            textViewPlazoDias.setText("Plazo de días: " + plazoRegistros);
+            textViewInicioMes.setText(getString(R.string.d_a_de_inicioss) + diaInicioMes);
+            textViewPlazoDias.setText(getString(R.string.plazo_de_d_assss) + plazoRegistros);
             textViewInicioMes.setVisibility(View.VISIBLE);
             textViewPlazoDias.setVisibility(View.VISIBLE);
 
@@ -232,9 +232,9 @@ public class recordatorio extends AppCompatActivity {
 
     private void showReminderDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("¡Ya es día de compras!");
-        builder.setMessage("¡Hoy es el día de hacer las compras que necesitas!");
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+        builder.setTitle(R.string.ya_es_d_a_de_compras);
+        builder.setMessage(R.string.hoy_es_el_d_a_de_hacer_las_compras_que_necesitasss);
+        builder.setPositiveButton(R.string.oks, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 // Puedes realizar acciones adicionales si es necesario

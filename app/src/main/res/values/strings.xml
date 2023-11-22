@@ -89,6 +89,29 @@
     <string name="agregar_productooo">Agregar Producto</string>
     <string name="tus_listass">Tus listas</string>
     <string name="guardar_lista">Guardar Lista</string>
+    <string name="nombrecATE">"Nombre: "</string>
+    <string name="fecha_de_fabricacionCATE">"Fecha Fabricación: "</string>
+    <string name="fecha_de_caducidadcate">"Fecha caducidad: "</string>
+    <string name="cantidadcate">"Cantidad: "</string>
+    <string name="desea_eliminar_este_contactollenar">¿Desea eliminar este contacto?</string>
+    <string name="sillenar">SI</string>
+    <string name="nollenar">NO</string>
+    <string name="canceladollenar">Cancelado</string>
+    <string name="logoutllenar">LogOut</string>
+    <string name="producto_eliminado_correctamente">Producto eliminado correctamente</string>
+    <string name="error_al_eliminar_el_producto">Error al eliminar el producto</string>
+    <string name="ingrese_un_valor_v_lido_en_el_campo_de_d_assss">Ingrese un valor válido en el campo de días</string>
+    <string name="preferencias_guardadas_correctamentesss">Preferencias guardadas correctamente</string>
+    <string name="d_a_de_inicio">"Día de inicio: "</string>
+    <string name="plazo_de_d_as">"Plazo de días: "</string>
+    <string name="la_fecha_seleccionada_debe_ser_igual_o_posterior_a_la_fecha_actual">La fecha seleccionada debe ser igual o posterior a la fecha actual</string>
+    <string name="por_favor_selecciona_valores_v_lidos">Por favor, selecciona valores válidos</string>
+    <string name="d_a_de_inicioss">"Día de inicio: "</string>
+    <string name="plazo_de_d_assss">"Plazo de días: "</string>
+    <string name="ya_es_d_a_de_compras">¡Ya es día de compras!</string>
+    <string name="hoy_es_el_d_a_de_hacer_las_compras_que_necesitasss">¡Hoy es el día de hacer las compras que necesitas!</string>
+    <string name="oks">OK</string>
+    <string name="nombre">"Nombre: "</string>
     <string-array name="escala">
         <item>Carnes</item>
         <item>Lacteos</item>

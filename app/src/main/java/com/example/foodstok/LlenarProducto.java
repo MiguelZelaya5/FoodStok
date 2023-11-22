@@ -61,10 +61,8 @@ public class LlenarProducto extends AppCompatActivity {
         Almacen=findViewById(R.id.Almacen);
         categoria=findViewById(R.id.categoria);
 
-        // Obtén el Id del artículo de la intent
         String idArticulo = getIntent().getStringExtra("Id");
 
-        // Crea una instancia de tu base de datos
         SQLiteDatabase db = databaseHelper.getReadableDatabase();
 
         Cursor cursor = null;
@@ -72,7 +70,6 @@ public class LlenarProducto extends AppCompatActivity {
             cursor = db.rawQuery("SELECT foto, nombrearticulo, fechafabricacion, fechacaducidad, cantidad ,categoria FROM articulos WHERE idarticulo = ? LIMIT 1", new String[]{idArticulo});
 
             if (cursor != null && cursor.moveToFirst()) {
-                // Obtén los valores de cada columna en el cursor
                 byte[] foto = cursor.getBlob(0);
                 String nombre = cursor.getString(1);
                 String categoria = cursor.getString(5);
@@ -108,8 +105,8 @@ public class LlenarProducto extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(LlenarProducto.this);
-                builder.setMessage("¿Desea eliminar este contacto?")
-                        .setPositiveButton("SI", new DialogInterface.OnClickListener() {
+                builder.setMessage(R.string.desea_eliminar_este_contactollenar)
+                        .setPositiveButton(R.string.sillenar, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 eliminar();
@@ -117,10 +114,10 @@ public class LlenarProducto extends AppCompatActivity {
                                 startActivity(intent);
                                 finish();
                             }
-                        }).setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                        }).setNegativeButton(R.string.nollenar, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                Toast.makeText(LlenarProducto.this, "Cancelado", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(LlenarProducto.this, R.string.canceladollenar, Toast.LENGTH_SHORT).show();
                             }
                         }).show();
             }
@@ -163,7 +160,7 @@ public class LlenarProducto extends AppCompatActivity {
         exit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(LlenarProducto.this, "LogOut", Toast.LENGTH_SHORT).show();
+                Toast.makeText(LlenarProducto.this, R.string.logoutllenar, Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -201,23 +198,22 @@ public class LlenarProducto extends AppCompatActivity {
         int rowsDeleted = database.delete("articulos", selection, selectionArgs);
 
         if (rowsDeleted > 0) {
-            Toast.makeText(this, "Producto eliminado correctamente", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.producto_eliminado_correctamente, Toast.LENGTH_SHORT).show();
         } else {
-            Toast.makeText(this, "Error al eliminar el producto", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.error_al_eliminar_el_producto, Toast.LENGTH_SHORT).show();
         }
 
         database.close();
     }
 
     private void logout() {
-        // Realizar aquí las tareas de cierre de sesión, como borrar datos de sesión, etc.
-        setLoggedIn(false); // Establecer el estado de inicio de sesión como falso o cerrado
-        clearUserId(); // Borrar el ID del usuario guardado en SharedPreferences
 
-        // Redirigir a la pantalla de inicio de sesión (Login)
+        setLoggedIn(false);
+        clearUserId();
+
         Intent intent = new Intent(LlenarProducto.this, Sesion.class);
         startActivity(intent);
-        finish(); // Cerrar la actividad actual (Inicio)
+        finish();
     }
     private void setLoggedIn(boolean isLoggedIn) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
