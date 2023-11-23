@@ -1,5 +1,7 @@
 package com.example.foodstok;
 
+import static com.example.foodstok.lista_agregar.redirectActivity;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -7,6 +9,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -21,7 +25,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.foodstok.R;
+import com.example.foodstok.datos_lista.DBdatos;
+import com.example.foodstok.datos_lista.datos;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import com.example.foodstok.datos_lista.datos;
+import com.example.foodstok.datos_lista.list_adapter;
+import com.example.foodstok.lista_agregar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +47,12 @@ public class lista extends AppCompatActivity {
     private TextView textViewnombre, textViewcantidad;
     private RecyclerView recyclerView;
     private RecyclerViewAdapter adapter;
-    FloatingActionButton fab;
+    FloatingActionButton fab, fabEliminar;
+
+    RecyclerView listadatos;
+
+    ArrayList<datos> listaArraydatos;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,19 +61,39 @@ public class lista extends AppCompatActivity {
 
         sharedPreferences = getSharedPreferences("session", MODE_PRIVATE);
         databaseHelper = new DatabaseHelper(this);
-        drawerLayout = findViewById(R.id.drawerLayout);
+        /*drawerLayout = findViewById(R.id.drawerLayout);
         menu=findViewById(R.id.menu);
         home=findViewById(R.id.home);
         about=findViewById(R.id.about);
         exit=findViewById(R.id.exit);
         Almacen=findViewById(R.id.Almacen);
         categoria=findViewById(R.id.categoria);
-        salir=findViewById(R.id.salir);
+        salir=findViewById(R.id.salir);*/
 
         int userId = getUserIdFromSharedPreferences();
         String[] selectionArgs = new String[]{String.valueOf(userId)};
 
-        menu.setOnClickListener(new View.OnClickListener() {
+
+        DBdatos list = new DBdatos(lista.this);
+        listadatos = findViewById(R.id.listadatos);
+        listadatos.setLayoutManager(new LinearLayoutManager(this));
+        listaArraydatos = new ArrayList<>();
+        list_adapter adapter1 = new list_adapter(list.mostrarContactos());
+        listadatos.setAdapter(adapter1);
+
+        fab = findViewById(R.id.favNuevo);
+
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                redirectActivity(lista.this, lista_agregar.class);
+            }
+        });
+
+
+
+        /*menu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 openDrawer(drawerLayout);
@@ -104,10 +140,10 @@ public class lista extends AppCompatActivity {
             public void onClick(View v) {
                 finishAffinity();
             }
-        });
+        });*/
 
 
-        // Obtén referencias a los elementos de la vista en la actividad
+        /*// Obtén referencias a los elementos de la vista en la actividad
         textViewnombre = findViewById(R.id.textViewnombre);
         textViewcantidad = findViewById(R.id.textViewcantidad);
 
@@ -144,10 +180,10 @@ public class lista extends AppCompatActivity {
 
             // Cierra la conexión a la base de datos después de usarla
             db.close();
-        }
+        }*/
 
     }
-    public static void openDrawer(DrawerLayout drawerLayout){
+    /*public static void openDrawer(DrawerLayout drawerLayout){
         drawerLayout.openDrawer(GravityCompat.START);
     }
     public static void closeDrawer(DrawerLayout drawerLayout){
@@ -167,7 +203,7 @@ public class lista extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         closeDrawer(drawerLayout);
-    }
+    }*/
 
     private void logout() {
         // Realizar aquí las tareas de cierre de sesión, como borrar datos de sesión, etc.
@@ -197,4 +233,5 @@ public class lista extends AppCompatActivity {
     private int getUserIdFromSharedPreferences() {
         return sharedPreferences.getInt("idusuarios", -1);
     }
+
 }

@@ -81,7 +81,7 @@ public class lista_agregar extends AppCompatActivity {
         btn_lista.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                redirectActivity(lista_agregar.this, lista_agregar.class);
+                redirectActivity(lista_agregar.this, lista.class);
             }
         });
 
