@@ -272,13 +272,11 @@ public class agregar_producto extends AppCompatActivity {
         String almcennombre=spialmacen.getText().toString();
 
         if (fechafabricacion.trim().isEmpty()) {
-            // Manejar el caso en que la fecha de fabricación esté vacía
             Toast.makeText(this, "Ingresa la fecha de fabricación", Toast.LENGTH_SHORT).show();
             return;
         }
 
         if (fechacaducidad.trim().isEmpty()) {
-            // Manejar el caso en que la fecha de caducidad esté vacía
             Toast.makeText(this, "Ingresa la fecha de caducidad", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -294,7 +292,6 @@ public class agregar_producto extends AppCompatActivity {
                 return;
             }
         } catch (DateTimeParseException e) {
-            // Manejar la excepción si las fechas no pueden ser parseadas
             e.printStackTrace();
             Toast.makeText(this, "Formato de fecha inválido", Toast.LENGTH_SHORT).show();
             return;
@@ -493,14 +490,13 @@ public class agregar_producto extends AppCompatActivity {
         return sharedPreferences.getInt("idusuarios", -1);
     }
     private void logout() {
-        // Realizar aquí las tareas de cierre de sesión, como borrar datos de sesión, etc.
-        setLoggedIn(false); // Establecer el estado de inicio de sesión como falso o cerrado
-        clearUserId(); // Borrar el ID del usuario guardado en SharedPreferences
 
-        // Redirigir a la pantalla de inicio de sesión (Login)
+        setLoggedIn(false);
+        clearUserId();
+
         Intent intent = new Intent(agregar_producto.this, Sesion.class);
         startActivity(intent);
-        finish(); // Cerrar la actividad actual (Inicio)
+        finish();
     }
     private boolean isUserLoggedIn() {
         return sharedPreferences.getBoolean("isLoggedIn", false);

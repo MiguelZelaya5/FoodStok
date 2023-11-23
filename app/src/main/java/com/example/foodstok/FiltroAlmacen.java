@@ -127,14 +127,11 @@ public class FiltroAlmacen extends AppCompatActivity {
         SQLiteDatabase db = databaseHelper.getReadableDatabase();
 
         Cursor cursor = db.rawQuery("SELECT foto, nombrearticulo, categoria, fechafabricacion, fechacaducidad, cantidad,idarticulo FROM articulos WHERE id_usuario = ? AND AlmacenM = ?", selectionArgs);
-        // Comprueba si hay resultados en el cursor
         if (cursor != null && cursor.moveToFirst()) {
-            // Crea una lista para almacenar los datos obtenidos
             List<DataItem> dataItems = new ArrayList<>();
 
 
             do {
-                // Obtén los valores de cada columna en el cursor
                 byte[] foto = cursor.getBlob(0);
                 String nombre = cursor.getString(1);
                 String categoria = cursor.getString(2);
@@ -143,40 +140,32 @@ public class FiltroAlmacen extends AppCompatActivity {
                 int cantidad = cursor.getInt(5);
                 String idarticulo=cursor.getString(6);
 
-                // Crea un objeto DataItem con los datos obtenidos
                 DataItem dataItem = new DataItem(foto, nombre, categoria, fechaFabricacion, fechaCaducidad, cantidad,idarticulo);
 
-                // Agrega el objeto a la lista
                 dataItems.add(dataItem);
 
             } while (cursor.moveToNext());
 
-            // Cierra el cursor después de usarlo
             cursor.close();
 
-            // Crea un adaptador y configúralo en el RecyclerView
             adapter = new RecyclerViewAdapter(dataItems);
             recyclerView.setAdapter(adapter);
         } else {
-            // No se encontraron datos en la base de datos
             Toast.makeText(this, "No se encontraron datos", Toast.LENGTH_SHORT).show();
         }
 
-        // Cierra la conexión a la base de datos después de usarla
         db.close();
     }
 
 
 
     private void logout() {
-        // Realizar aquí las tareas de cierre de sesión, como borrar datos de sesión, etc.
-        setLoggedIn(false); // Establecer el estado de inicio de sesión como falso o cerrado
-        clearUserId(); // Borrar el ID del usuario guardado en SharedPreferences
+        setLoggedIn(false);
+        clearUserId();
 
-        // Redirigir a la pantalla de inicio de sesión (Login)
         Intent intent = new Intent(FiltroAlmacen.this, Sesion.class);
         startActivity(intent);
-        finish(); // Cerrar la actividad actual (Inicio)
+        finish();
     }
     private void setLoggedIn(boolean isLoggedIn) {
         SharedPreferences.Editor editor = sharedPreferences.edit();

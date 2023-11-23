@@ -34,7 +34,6 @@ public class mostrarCategorias extends RecyclerView.Adapter<mostrarCategorias.Vi
     public void onBindViewHolder(@NonNull mostrarCategorias.ViewHolder holder, int position) {
         DataItem dataItem = dataItems.get(position);
 
-        // Establece los datos en los elementos de la vista
         holder.imageView.setImageBitmap(BitmapFactory.decodeByteArray(dataItem.getFoto(), 0, dataItem.getFoto().length));
         holder.nombreTextView.setText(dataItem.getNombre());
         holder.fabricacionTextView.setText(dataItem.getFechaFabricacion());
@@ -58,7 +57,6 @@ public class mostrarCategorias extends RecyclerView.Adapter<mostrarCategorias.Vi
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            // Obtén las referencias a los elementos de la vista
             imageView = itemView.findViewById(R.id.imageView);
             nombreTextView = itemView.findViewById(R.id.nombreTextView);
             fabricacionTextView = itemView.findViewById(R.id.fabricacionTextView22);

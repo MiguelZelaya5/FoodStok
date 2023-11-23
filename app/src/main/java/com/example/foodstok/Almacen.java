@@ -60,9 +60,6 @@ public class Almacen extends AppCompatActivity {
         categoria=findViewById(R.id.categoria);
         salir=findViewById(R.id.salir);
 
-        //btnAgregarAl=findViewById(R.id.ItemAgregar);
-        //editTextAlmacen=findViewById(R.id.editTextAlmacen);
-
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -146,14 +143,12 @@ public class Almacen extends AppCompatActivity {
     }
 
     private void logout() {
-        // Realizar aquí las tareas de cierre de sesión, como borrar datos de sesión, etc.
-        setLoggedIn(false); // Establecer el estado de inicio de sesión como falso o cerrado
-        clearUserId(); // Borrar el ID del usuario guardado en SharedPreferences
+        setLoggedIn(false);
+        clearUserId();
 
-        // Redirigir a la pantalla de inicio de sesión (Login)
         Intent intent = new Intent(Almacen.this, Sesion.class);
         startActivity(intent);
-        finish(); // Cerrar la actividad actual (Inicio)
+        finish();
     }
     private void setLoggedIn(boolean isLoggedIn) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -215,24 +210,18 @@ public class Almacen extends AppCompatActivity {
 
         DatabaseHelper databaseHelper = new DatabaseHelper(this);
 
-        // Obtén la instancia de la base de datos en modo escritura
+
         SQLiteDatabase database = databaseHelper.getWritableDatabase();
 
-        // Obtén el ID del usuario de las preferencias compartidas
-        int userId = getUserIdFromSharedPreferences();
 
-        // Obtén el nombre del almacén del EditText
-        //String almacen = editTextAlmacen.getText().toString();
+        int userId = getUserIdFromSharedPreferences();
 
         try {
             ContentValues values = new ContentValues();
 
-            // No es necesario establecer valores nulos para las otras columnas
-            // Solo establece el valor para la columna "AlmacenM"
             values.put("AlmacenM", nombreAlmacen);
 
 
-            // Inserta el registro en la tabla "articulos"
             long resultado = database.insert("articulos", null, values);
 
             if (resultado != -1) {
@@ -242,11 +231,9 @@ public class Almacen extends AppCompatActivity {
                 Toast.makeText(this, "Error al agregar", Toast.LENGTH_SHORT).show();
             }
         } catch (Exception e) {
-            // Manejar cualquier excepción que pueda ocurrir durante la inserción
             e.printStackTrace();
             Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show();
         } finally {
-            // Asegúrate de cerrar la base de datos para liberar recursos
             database.close();
         }
 
@@ -256,42 +243,30 @@ public class Almacen extends AppCompatActivity {
     public void obtenerAlmacenes() {
         SQLiteDatabase db = databaseHelper.getReadableDatabase();
         int userId = getUserIdFromSharedPreferences();
-        String[] selectionArgs = new String[]{String.valueOf(userId)}; // Convertir el int a String
+        String[] selectionArgs = new String[]{String.valueOf(userId)};
 
         Cursor cursor = db.rawQuery("SELECT DISTINCT AlmacenM FROM articulos WHERE id_usuario = ?", selectionArgs);
 
-        // Comprueba si hay resultados en el cursor
         if (cursor != null && cursor.moveToFirst()) {
-            // Crea una lista para almacenar los datos obtenidos
             List<DataAlmacen> dataalmacen = new ArrayList<>();
 
-
             do {
-                // Obtén los valores de cada columna en el cursor
-
                 String AlmacenM = cursor.getString(0);
 
-
-                // Crea un objeto DataItem con los datos obtenidos
                 DataAlmacen dataalmace = new DataAlmacen( AlmacenM);
 
-                // Agrega el objeto a la lista
                 dataalmacen.add(dataalmace);
 
             } while (cursor.moveToNext());
 
-            // Cierra el cursor después de usarlo
             cursor.close();
 
-            // Crea un adaptador y configúralo en el RecyclerView
             adapter = new AlmcacenData(dataalmacen);
             recyclerView.setAdapter(adapter);
         } else {
-            // No se encontraron datos en la base de datos
             Toast.makeText(this, "No se encontraron datos", Toast.LENGTH_SHORT).show();
         }
 
-        // Cierra la conexión a la base de datos después de usarla
         db.close();
     }
 

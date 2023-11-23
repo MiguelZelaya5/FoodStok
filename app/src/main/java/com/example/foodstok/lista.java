@@ -206,14 +206,12 @@ public class lista extends AppCompatActivity {
     }*/
 
     private void logout() {
-        // Realizar aquí las tareas de cierre de sesión, como borrar datos de sesión, etc.
-        setLoggedIn(false); // Establecer el estado de inicio de sesión como falso o cerrado
-        clearUserId(); // Borrar el ID del usuario guardado en SharedPreferences
+        setLoggedIn(false);
+        clearUserId();
 
-        // Redirigir a la pantalla de inicio de sesión (Login)
         Intent intent = new Intent(lista.this, Sesion.class);
         startActivity(intent);
-        finish(); // Cerrar la actividad actual (Inicio)
+        finish();
     }
     private void setLoggedIn(boolean isLoggedIn) {
         SharedPreferences.Editor editor = sharedPreferences.edit();

@@ -89,13 +89,10 @@ public class Categorias extends AppCompatActivity {
                 String[] selectionArgs = new String[]{String.valueOf(userId), txtCategoria};
 
                 Cursor cursor = db.rawQuery("SELECT foto, nombrearticulo, categoria, fechafabricacion, fechacaducidad, cantidad,idarticulo FROM articulos WHERE id_usuario = ? AND categoria LIKE ?", selectionArgs);
-                // Comprueba si hay resultados en el cursor
                 if (cursor != null && cursor.moveToFirst()) {
-                    // Crea una lista para almacenar los datos obtenidos
                     List<DataItem> dataItems = new ArrayList<>();
 
                     do {
-                        // Obtén los valores de cada columna en el cursor
                         byte[] foto = cursor.getBlob(0);
                         String nombre = cursor.getString(1);
                         String categoria = cursor.getString(2);
@@ -103,26 +100,21 @@ public class Categorias extends AppCompatActivity {
                         String fechaCaducidad = cursor.getString(4);
                         int cantidad = cursor.getInt(5);
                         String idarticulo=cursor.getString(6);
-                        // Crea un objeto DataItem con los datos obtenidos
+
                         DataItem dataItem = new DataItem(foto, nombre, categoria, fechaFabricacion, fechaCaducidad, cantidad,idarticulo);
 
-                        // Agrega el objeto a la lista
                         dataItems.add(dataItem);
 
                     } while (cursor.moveToNext());
 
-                    // Cierra el cursor después de usarlo
                     cursor.close();
 
-                    // Crea un adaptador y configúralo en el RecyclerView
                     adapter = new mostrarCategorias(dataItems);
                     recyclerView.setAdapter(adapter);
                 } else {
-                    // No se encontraron datos en la base de datos
                     Toast.makeText(Categorias.this, "No se encontraron datos", Toast.LENGTH_SHORT).show();
                 }
 
-                // Cierra la conexión a la base de datos después de usarla
                 db.close();
             }
         });
@@ -265,7 +257,6 @@ public class Categorias extends AppCompatActivity {
     public void onClickImgBtnMicrofono(View v) {
         Intent intentActionRecognizeSpeech = new Intent(
                 RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-        // Configura el Lenguaje (Español-México)
         intentActionRecognizeSpeech.putExtra(
                 RecognizerIntent.EXTRA_LANGUAGE_MODEL, "es-MX");
         try {
@@ -294,14 +285,12 @@ public class Categorias extends AppCompatActivity {
 
     }
     private void logout() {
-        // Realizar aquí las tareas de cierre de sesión, como borrar datos de sesión, etc.
-        setLoggedIn(false); // Establecer el estado de inicio de sesión como falso o cerrado
-        clearUserId(); // Borrar el ID del usuario guardado en SharedPreferences
+        setLoggedIn(false);
+        clearUserId();
 
-        // Redirigir a la pantalla de inicio de sesión (Login)
         Intent intent = new Intent(Categorias.this, Sesion.class);
         startActivity(intent);
-        finish(); // Cerrar la actividad actual (Inicio)
+        finish();
     }
     private boolean isUserLoggedIn() {
         return sharedPreferences.getBoolean("isLoggedIn", false);

@@ -32,11 +32,11 @@ public class lista_agregar extends AppCompatActivity {
     ImageView menu;
     LinearLayout exit,about,categoria,Almacen,home,salir;
     private Button btn_lista, btn_agg_recordatorio;
-    private EditText editTextCantidad; // Nuevo EditText para la cantidad
+    private EditText editTextCantidad;
     private ListView listViewProductos;
     private ArrayAdapter<String> adapter;
     private ArrayList<String> productos;
-    private ArrayList<Integer> cantidades; // Nuevo ArrayList para almacenar las cantidades
+    private ArrayList<Integer> cantidades;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,10 +55,10 @@ public class lista_agregar extends AppCompatActivity {
         btn_agg_recordatorio=findViewById(R.id.btn_agg_rec);
         btn_lista = findViewById(R.id.btn_lista);
         editTextProducto = findViewById(R.id.editTextProduct);
-        editTextCantidad = findViewById(R.id.editTextCantidad); // Enlazar con el EditText en el layout
+        editTextCantidad = findViewById(R.id.editTextCantidad);
         listViewProductos = findViewById(R.id.listViewProducto);
         productos = new ArrayList<>();
-        cantidades = new ArrayList<>(); // Inicializar el ArrayList de cantidades
+        cantidades = new ArrayList<>();
 
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_multiple_choice, productos);
         listViewProductos.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
@@ -138,32 +138,32 @@ public class lista_agregar extends AppCompatActivity {
 
     public void agregarProducto(View view) {
         String nombreProducto = editTextProducto.getText().toString();
-        String cantidadProducto = editTextCantidad.getText().toString(); // Obtener la cantidad ingresada
+        String cantidadProducto = editTextCantidad.getText().toString();
 
         if (!nombreProducto.isEmpty() && !cantidadProducto.isEmpty()) {
             productos.add(nombreProducto);
-            cantidades.add(Integer.parseInt(cantidadProducto)); // Convertir cantidad a entero y agregarla al ArrayList
+            cantidades.add(Integer.parseInt(cantidadProducto));
             adapter.notifyDataSetChanged();
             editTextProducto.setText("");
-            editTextCantidad.setText(""); // Limpiar el EditText de cantidad
+            editTextCantidad.setText("");
         }
     }
 
     public void eliminarProductos(View view) {
         SparseBooleanArray checkedItems = listViewProductos.getCheckedItemPositions();
         ArrayList<String> productosSeleccionados = new ArrayList<>();
-        ArrayList<Integer> cantidadesSeleccionadas = new ArrayList<>(); // Nuevo ArrayList para almacenar las cantidades seleccionadas
+        ArrayList<Integer> cantidadesSeleccionadas = new ArrayList<>();
 
         for (int i = 0; i < checkedItems.size(); i++) {
             int position = checkedItems.keyAt(i);
             if (checkedItems.valueAt(i)) {
                 productosSeleccionados.add(productos.get(position));
-                cantidadesSeleccionadas.add(cantidades.get(position)); // Agregar la cantidad correspondiente al producto seleccionado
+                cantidadesSeleccionadas.add(cantidades.get(position));
             }
         }
 
         productos.removeAll(productosSeleccionados);
-        cantidades.removeAll(cantidadesSeleccionadas); // Eliminar las cantidades seleccionadas
+        cantidades.removeAll(cantidadesSeleccionadas);
         listViewProductos.clearChoices();
         adapter.notifyDataSetChanged();
     }
@@ -229,14 +229,13 @@ public class lista_agregar extends AppCompatActivity {
     }
 
     private void logout() {
-        // Realizar aquí las tareas de cierre de sesión, como borrar datos de sesión, etc.
-        setLoggedIn(false); // Establecer el estado de inicio de sesión como falso o cerrado
-        clearUserId(); // Borrar el ID del usuario guardado en SharedPreferences
 
-        // Redirigir a la pantalla de inicio de sesión (Login)
+        setLoggedIn(false);
+        clearUserId();
+
         Intent intent = new Intent(lista_agregar.this, Sesion.class);
         startActivity(intent);
-        finish(); // Cerrar la actividad actual (Inicio)
+        finish();
     }
     private void setLoggedIn(boolean isLoggedIn) {
         SharedPreferences.Editor editor = sharedPreferences.edit();

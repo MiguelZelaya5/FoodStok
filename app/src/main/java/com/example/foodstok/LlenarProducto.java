@@ -46,7 +46,6 @@ public class LlenarProducto extends AppCompatActivity {
 
         int userId = getUserIdFromSharedPreferences();
         String[] selectionArgs = new String[]{String.valueOf(userId)};
-        // Obtén referencias a los elementos de la vista en la actividad LlenarProducto
         imageView = findViewById(R.id.ivProductImage);
         nombreTextView = findViewById(R.id.etProductName);
         categoriaTextView = findViewById(R.id.etCategory);

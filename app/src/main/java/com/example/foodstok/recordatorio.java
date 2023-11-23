@@ -237,7 +237,7 @@ public class recordatorio extends AppCompatActivity {
         builder.setPositiveButton(R.string.oks, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                // Puedes realizar acciones adicionales si es necesario
+
             }
         });
         builder.show();

@@ -15,7 +15,6 @@ public class nuevaCategoria extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        // Habilitar el botón de retroceso en la barra de herramientas
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 }
