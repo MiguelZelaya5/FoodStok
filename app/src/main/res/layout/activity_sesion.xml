@@ -58,7 +58,7 @@
     <TextView
         android:id="@+id/inise"
         android:layout_width="203dp"
-        android:layout_height="0dp"
+        android:layout_height="48dp"
         android:onClick="siguiente"
         android:layout_marginStart="27dp"
         android:layout_marginTop="13dp"

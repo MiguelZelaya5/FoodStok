@@ -32,7 +32,7 @@ public class LlenarProducto extends AppCompatActivity {
     private SharedPreferences sharedPreferences;
     DrawerLayout drawerLayout;
     ImageView menu;
-    LinearLayout exit,about,categoria,Almacen,home;
+    LinearLayout exit,about,categoria,Almacen,home,salir;
 
     private TextView nombreTextView, categoriaTextView, fabricacionTextView, caducidadTextView, cantidadTextView;
 
@@ -59,6 +59,7 @@ public class LlenarProducto extends AppCompatActivity {
         exit=findViewById(R.id.exit);
         Almacen=findViewById(R.id.Almacen);
         categoria=findViewById(R.id.categoria);
+        salir=findViewById(R.id.salir);
 
         String idArticulo = getIntent().getStringExtra("Id");
 
@@ -110,8 +111,8 @@ public class LlenarProducto extends AppCompatActivity {
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 eliminar();
                                 AlertDialog.Builder builder = new AlertDialog.Builder(LlenarProducto.this);
-                                builder.setMessage("¿Redirir a: ?")
-                                        .setPositiveButton("Menu Principal", new DialogInterface.OnClickListener() {
+                                builder.setMessage(R.string.redirir_a)
+                                        .setPositiveButton(R.string.menu_principal, new DialogInterface.OnClickListener() {
                                             @Override
                                             public void onClick(DialogInterface dialogInterface, int i) {
                                                 Intent intent = new Intent(LlenarProducto.this, MainActivity.class);
@@ -119,7 +120,7 @@ public class LlenarProducto extends AppCompatActivity {
                                                 finish();
 
                                             }
-                                        }).setNegativeButton("Estanteria", new DialogInterface.OnClickListener() {
+                                        }).setNegativeButton(R.string.estanteria, new DialogInterface.OnClickListener() {
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
                                                 Intent intent = new Intent(LlenarProducto.this, Almacen.class);
@@ -175,7 +176,14 @@ public class LlenarProducto extends AppCompatActivity {
         exit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(LlenarProducto.this, R.string.logoutllenar, Toast.LENGTH_SHORT).show();
+                Toast.makeText(LlenarProducto.this, R.string.logout, Toast.LENGTH_SHORT).show();
+                logout();
+            }
+        });
+        salir.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finishAffinity();
             }
         });
 

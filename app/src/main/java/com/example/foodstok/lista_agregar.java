@@ -184,11 +184,11 @@ public class lista_agregar extends AppCompatActivity {
         }
 
         if (listaGuardada.toString().isEmpty()) {
-            Toast.makeText(lista_agregar.this, "Ingrese al menos un producto", Toast.LENGTH_SHORT).show();
+            Toast.makeText(lista_agregar.this, R.string.ingrese_al_menos_un_productod, Toast.LENGTH_SHORT).show();
         }
 
         if (listaGuardada_cant.toString().isEmpty()) {
-            Toast.makeText(lista_agregar.this, "Ingrese al menos uno", Toast.LENGTH_SHORT).show();
+            Toast.makeText(lista_agregar.this, R.string.ingrese_al_menos_unod, Toast.LENGTH_SHORT).show();
         }
 
         DatabaseHelper databaseHelper = new DatabaseHelper(lista_agregar.this);
@@ -204,10 +204,10 @@ public class lista_agregar extends AppCompatActivity {
         long resultado = database.insert("productos", null, values);
 
         if (resultado != -1) {
-            Toast.makeText(lista_agregar.this, "Lista agregada correctamente", Toast.LENGTH_SHORT).show();
+            Toast.makeText(lista_agregar.this, R.string.lista_agregada_correctamentess, Toast.LENGTH_SHORT).show();
             redirectToHome();
         } else {
-            Toast.makeText(lista_agregar.this, "Error al agregar la lista", Toast.LENGTH_SHORT).show();
+            Toast.makeText(lista_agregar.this, R.string.error_al_agregar_la_listass, Toast.LENGTH_SHORT).show();
         }
 
         database.close();

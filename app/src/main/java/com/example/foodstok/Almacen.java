@@ -264,7 +264,7 @@ public class Almacen extends AppCompatActivity {
             adapter = new AlmcacenData(dataalmacen);
             recyclerView.setAdapter(adapter);
         } else {
-            Toast.makeText(this, "No se encontraron datos", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.no_se_encontraron_datossss, Toast.LENGTH_SHORT).show();
         }
 
         db.close();

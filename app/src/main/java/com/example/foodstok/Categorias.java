@@ -112,7 +112,7 @@ public class Categorias extends AppCompatActivity {
                     adapter = new mostrarCategorias(dataItems);
                     recyclerView.setAdapter(adapter);
                 } else {
-                    Toast.makeText(Categorias.this, "No se encontraron datos", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Categorias.this, R.string.no_se_encontraron_datosaC, Toast.LENGTH_SHORT).show();
                 }
 
                 db.close();
@@ -264,7 +264,7 @@ public class Categorias extends AppCompatActivity {
                     RECOGNIZE_SPEECH_ACTIVITY);
         } catch (ActivityNotFoundException a) {
             Toast.makeText(getApplicationContext(),
-                    "Tú dispositivo no soporta el reconocimiento por voz",
+                    R.string.t_dispositivo_no_soporta_el_reconocimiento_por_vozd,
                     Toast.LENGTH_SHORT).show();
         }
     }

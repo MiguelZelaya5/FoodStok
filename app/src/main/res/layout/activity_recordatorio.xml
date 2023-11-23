@@ -17,7 +17,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Establezca el día inicial de sus compras:"
+            android:text="@string/establezca_el_d_a_inicial_de_sus_compras"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             android:textColor="#000000" />
 
@@ -48,7 +48,7 @@
                     android:background="#FFFFFF"
                     android:textColor="#000000"
                     android:textCursorDrawable="@null"
-                    android:hint="Ingrese la fecha"
+                    android:hint="@string/ingrese_la_fechadsda"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -59,7 +59,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="Establezca su plazo de recordatorio:"
+            android:text="@string/establezca_su_plazo_de_recordatorio"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textColor="#000000" />
 
@@ -73,20 +73,20 @@
                 android:id="@+id/radioButton7"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="7 días"
+                android:text="@string/_7_d_as"
                 android:textColor="#000000" />
             <RadioButton
                 android:id="@+id/radioButton15"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="15 días"
+                android:text="@string/_15_d_as"
                 android:textColor="#000000" />
 
             <RadioButton
                 android:id="@+id/radioButton31"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="31 días"
+                android:text="@string/_31_d_as"
                 android:textColor="#000000" />
 
         </RadioGroup>
@@ -96,7 +96,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="Introduce los dias que prefieras:"
+            android:text="@string/introduce_los_dias_que_prefieras"
             android:textAlignment="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textColor="#000000" />
@@ -104,9 +104,10 @@
         <EditText
             android:id="@+id/editTextNumber"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:ems="10"
-            android:inputType="number" />
+            android:inputType="number"
+            tools:ignore="SpeakableTextPresentCheck" />
 
         <Button
             android:id="@+id/buttonGuardarPreferencias"
@@ -114,7 +115,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:background="#1976D2"
-            android:text="Guardar preferencias"
+            android:text="@string/guardar_preferencias"
             android:textAppearance="@style/TextAppearance.AppCompat.Button"
             android:textColor="#FFFFFF" />
 
