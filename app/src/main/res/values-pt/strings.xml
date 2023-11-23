@@ -151,6 +151,7 @@
     <string name="logout3">Sair</string>
     <string name="no_se_encontraron_datos3">Nenhum dado encontrado</string>
     <string name="nombre_de_almacen">Dê um nome ao armazenamento</string>
+    <string name="idioma">pt-BR</string>
     <string-array name="escala">
         <item>Carnes</item>
         <item>Laticínios</item>

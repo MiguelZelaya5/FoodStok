@@ -258,7 +258,7 @@ public class Categorias extends AppCompatActivity {
         Intent intentActionRecognizeSpeech = new Intent(
                 RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         intentActionRecognizeSpeech.putExtra(
-                RecognizerIntent.EXTRA_LANGUAGE_MODEL, "es-MX");
+                RecognizerIntent.EXTRA_LANGUAGE_MODEL, getString(R.string.idioma));
         try {
             startActivityForResult(intentActionRecognizeSpeech,
                     RECOGNIZE_SPEECH_ACTIVITY);

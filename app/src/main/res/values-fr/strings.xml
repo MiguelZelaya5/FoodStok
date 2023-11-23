@@ -150,6 +150,7 @@
         <string name="logout">Déconnexion</string>
         <string name="logout3">Déconnexion</string>
         <string name="no_se_encontraron_datos3">Aucune donnée trouvée</string>
+        <string name="idioma">fr-FR</string>
         <string name="nombre_de_almacen">Nommer le stockage</string>
         <string-array name="escala">
             <item>Viande</item>

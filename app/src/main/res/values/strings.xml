@@ -151,6 +151,8 @@
     <string name="logout3">Log Out</string>
     <string name="no_se_encontraron_datos3">No data found</string>
     <string name="nombre_de_almacen">Name the storage</string>
+
+    <string name="idioma">en-US</string>
     <string-array name="escala">
         <item>Meat</item>
         <item>Dairy</item>

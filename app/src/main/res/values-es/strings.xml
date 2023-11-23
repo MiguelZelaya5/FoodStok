@@ -150,6 +150,7 @@
     <string name="logout">LogOut</string>
     <string name="logout3">LogOut</string>
     <string name="no_se_encontraron_datos3">No se encontraron datos</string>
+    <string name="idioma">es-MX</string>
     <string name="nombre_de_almacen">Nombre del Almacen</string>
     <string-array name="escala">
         <item>Carnes</item>
