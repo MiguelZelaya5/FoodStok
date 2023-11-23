@@ -141,7 +141,7 @@
             android:id="@+id/spialmacen"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Nombre de Almacen"
+            android:hint="@string/nombre_de_almacen"
             android:background="@drawable/custom_edittext_bg"
             android:dropDownVerticalOffset="40dp"
             android:minHeight="48dp"/>

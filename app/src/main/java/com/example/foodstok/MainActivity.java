@@ -125,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
         exit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(MainActivity.this, "LogOut", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, R.string.logout3, Toast.LENGTH_SHORT).show();
                 logout();
             }
         });
@@ -190,7 +190,7 @@ public class MainActivity extends AppCompatActivity {
             recyclerView.setAdapter(adapter);
         } else {
 
-            Toast.makeText(this, "No se encontraron datos", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.no_se_encontraron_datos3, Toast.LENGTH_SHORT).show();
         }
 
         db.close();

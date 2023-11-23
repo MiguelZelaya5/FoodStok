@@ -151,7 +151,7 @@ public class FiltroAlmacen extends AppCompatActivity {
             adapter = new RecyclerViewAdapter(dataItems);
             recyclerView.setAdapter(adapter);
         } else {
-            Toast.makeText(this, "No se encontraron datos", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.no_se_encontraron_datosF, Toast.LENGTH_SHORT).show();
         }
 
         db.close();

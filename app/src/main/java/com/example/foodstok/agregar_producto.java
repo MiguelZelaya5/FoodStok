@@ -272,12 +272,12 @@ public class agregar_producto extends AppCompatActivity {
         String almcennombre=spialmacen.getText().toString();
 
         if (fechafabricacion.trim().isEmpty()) {
-            Toast.makeText(this, "Ingresa la fecha de fabricación", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.ingresa_la_fecha_de_fabricaci_n, Toast.LENGTH_SHORT).show();
             return;
         }
 
         if (fechacaducidad.trim().isEmpty()) {
-            Toast.makeText(this, "Ingresa la fecha de caducidad", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.ingresa_la_fecha_de_caducidad, Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -288,12 +288,12 @@ public class agregar_producto extends AppCompatActivity {
             LocalDate fechaCaducidad = LocalDate.parse(fechacaducidad, formatter);
 
             if (fechaCaducidad.isBefore(fechaFabricacion)) {
-                Toast.makeText(this, "Fecha de caducidad no válida", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.fecha_de_caducidad_no_v_lida, Toast.LENGTH_SHORT).show();
                 return;
             }
         } catch (DateTimeParseException e) {
             e.printStackTrace();
-            Toast.makeText(this, "Formato de fecha inválido", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.formato_de_fecha_inv_lido, Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -452,13 +452,13 @@ public class agregar_producto extends AppCompatActivity {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 dispatchTakePictureIntent();
             } else {
-                Toast.makeText(this, "Permiso de cámara denegado", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.permiso_de_c_mara_denegado, Toast.LENGTH_SHORT).show();
             }
         } else if (requestCode == PERMISSION_REQUEST_STORAGE) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 dispatchPickImageIntent();
             } else {
-                Toast.makeText(this, "Permiso de almacenamiento denegado", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.permiso_de_almacenamiento_denegado, Toast.LENGTH_SHORT).show();
             }
         }
     }
